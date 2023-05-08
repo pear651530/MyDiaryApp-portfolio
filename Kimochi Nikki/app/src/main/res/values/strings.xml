@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">心情日記本</string>
+    <string name="login">登入</string>
+    <string name="userid">帳號</string>
+    <string name="userpassword">密碼</string>
+</resources>
