@@ -19,14 +19,19 @@ import android.view.View
 import android.os.Handler
 import android.util.Log
 
-class HomeActivity : AppCompatActivity() {
+class LoadingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home)
+        setContentView(R.layout.loading)
+        supportActionBar?.hide()
 
-        val btn_back: Button = findViewById(R.id.backbtn)
-        btn_back.setOnClickListener { finish() }
+        val loading_gif = findViewById<ImageView>(R.id.loading_gif)
+        Glide.with(this).load(R.drawable.load).into(loading_gif)
+
+        Handler().postDelayed({
+            finish()
+        }, 5500)
 
     }
 }
