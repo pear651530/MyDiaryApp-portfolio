@@ -22,6 +22,21 @@
             android:adjustViewBounds="true"
             android:gravity="center"/>
 
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:shadowColor="#808080"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:text="@string/login"
+            android:textColor="#000000"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,12 +48,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="16dp"
-                android:shadowColor="@color/gray"
+                android:shadowColor="#808080"
                 android:shadowDx="2"
                 android:shadowDy="2"
                 android:shadowRadius="3"
                 android:text="@string/userid"
-                android:textColor="@color/black"
+                android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -64,12 +79,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="16dp"
-                android:shadowColor="@color/gray"
+                android:shadowColor="#808080"
                 android:shadowDx="2"
                 android:shadowDy="2"
                 android:shadowRadius="3"
                 android:text="@string/userpassword"
-                android:textColor="@color/black"
+                android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -83,11 +98,11 @@
                 android:ems="10"/>
         </LinearLayout>
         <Button
-            android:id="@+id/loginbtn"
-            android:layout_width="200dp"
+            android:id="@+id/backbtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login"
+            android:text="返回"
             android:textSize="20sp"
-            android:background="@drawable/rounded_button"/>
+            android:background="@color/butfirst"/>
     </LinearLayout>
 </FrameLayout>
