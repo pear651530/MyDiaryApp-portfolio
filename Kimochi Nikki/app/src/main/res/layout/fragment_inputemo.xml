@@ -6,8 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.inputemo.InputemoFragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
+
     <TextView
-        android:id="@+id/text_slideshow"
+        android:id="@+id/text_inputemo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

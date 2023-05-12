@@ -1,13 +1,13 @@
-package com.example.kimochinikki.ui.diary
+package com.example.kimochinikki.ui.setting
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DiaryViewModel : ViewModel() {
+class SettingViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is diary Fragment"
+        value = "This is setting Fragment"
     }
     val text: LiveData<String> = _text
 }

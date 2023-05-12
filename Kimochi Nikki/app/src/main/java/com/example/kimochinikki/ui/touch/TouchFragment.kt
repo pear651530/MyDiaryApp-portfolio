@@ -1,4 +1,4 @@
-package com.example.kimochinikki.ui.inputemo
+package com.example.kimochinikki.ui.touch
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.kimochinikki.databinding.FragmentInputemoBinding
+import com.example.kimochinikki.databinding.FragmentTouchBinding
 
-class InputemoFragment : Fragment() {
+class TouchFragment : Fragment() {
 
-    private var _binding: FragmentInputemoBinding? = null
+    private var _binding: FragmentTouchBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,12 +23,12 @@ class InputemoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val slideshowViewModel =
-            ViewModelProvider(this).get(InputemoViewModel::class.java)
+            ViewModelProvider(this).get(TouchViewModel::class.java)
 
-        _binding = FragmentInputemoBinding.inflate(inflater, container, false)
+        _binding = FragmentTouchBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textInputemo
+        val textView: TextView = binding.textTouch
         slideshowViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }

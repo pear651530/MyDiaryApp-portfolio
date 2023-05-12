@@ -37,17 +37,11 @@ class HomeActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_diary, R.id.nav_inputemo
+                R.id.nav_home, R.id.nav_diary, R.id.nav_inputemo, R.id.nav_touch, R.id.nav_setting
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main_activity2, menu)
-        return true
     }
 
     override fun onSupportNavigateUp(): Boolean {
