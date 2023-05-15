@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">心情日記本</string>
     <string name="login">登入</string>
+    <string name="sign">註冊</string>
     <string name="userid">帳號</string>
     <string name="userpassword">密碼</string>
+    <string name="select_btn">選擇圖片</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -10,7 +12,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
     <string name="menu_home">首頁</string>
     <string name="menu_diary">日記</string>
     <string name="menu_inputemo">輸入心情</string>

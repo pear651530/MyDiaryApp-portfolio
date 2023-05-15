@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "809743752277",
+    "project_id": "newtry0515",
+    "storage_bucket": "newtry0515.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809743752277:android:cab2bbbe2e25cf00dcc8dc",
+        "android_client_info": {
+          "package_name": "com.example.kimochinikki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809743752277-ij9d7a4bk0a2bk2bbtg0b427jpo84oa1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCt7M6L7O2_aXa_dpv6HDVndyMvkCUhwKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809743752277-ij9d7a4bk0a2bk2bbtg0b427jpo84oa1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
