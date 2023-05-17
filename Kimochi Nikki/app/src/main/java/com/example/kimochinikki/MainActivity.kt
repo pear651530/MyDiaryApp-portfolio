@@ -48,9 +48,23 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-       btn_sign.setOnClickListener {
-           // test()// Do something in response to button click
-            gosign()
+        btn_sign.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // 按下按钮时将背景色更改为深蓝色
+                    btn_sign.setBackgroundResource(R.drawable.rounded_button_click)
+                    test()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    // 松开按钮时将背景色恢复为半透明黑色
+                    btn_sign.setBackgroundResource(R.drawable.rounded_button)
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        // 执行按钮被点击时的操作
+                        gosign()
+                    }
+                }
+            }
+            true
         }
     }
 

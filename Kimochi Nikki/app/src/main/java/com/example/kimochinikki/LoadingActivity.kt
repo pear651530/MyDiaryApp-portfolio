@@ -31,7 +31,7 @@ class LoadingActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             finish()
-        }, 5500)
+        }, 300)
 
     }
 }

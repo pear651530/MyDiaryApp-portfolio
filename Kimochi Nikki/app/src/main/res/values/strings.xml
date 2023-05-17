@@ -4,7 +4,12 @@
     <string name="sign">註冊</string>
     <string name="userid">帳號</string>
     <string name="userpassword">密碼</string>
-    <string name="select_btn">選擇圖片</string>
+    <string name="username">名稱</string>
+    <string name="select_image">選擇圖片</string>
+    <string name="alt_title">授予權限</string>
+    <string name="alt_text">是否要讓應用程式存取媒體庫</string>
+    <string name="alt_yes">是</string>
+    <string name="alt_no">否</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -17,4 +22,13 @@
     <string name="menu_inputemo">輸入心情</string>
     <string name="menu_touch">教學</string>
     <string name="menu_setting">個人設置</string>
+    <string name="title_activity_trytry">trytry</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

@@ -21,5 +21,5 @@
 
     <style name="Theme.KimochiNikki.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.KimochiNikki.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.KimochiNikki.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 </resources>
