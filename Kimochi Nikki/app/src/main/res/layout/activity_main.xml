@@ -39,12 +39,12 @@
                 android:shadowRadius="3"
                 android:text="@string/userid"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edittext_userid"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textFilter"
@@ -71,12 +71,12 @@
                 android:shadowRadius="3"
                 android:text="@string/userpassword"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edittextuser_password"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textFilter"
@@ -93,15 +93,16 @@
 
             <Button
                 android:id="@+id/btn_login"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
                 android:background="@drawable/rounded_button"
                 android:text="@string/login"
                 android:textSize="20sp" />
 
             <Button
                 android:id="@+id/btn_sign"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
                 android:text="@string/sign"

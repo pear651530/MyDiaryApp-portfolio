@@ -1,6 +1,7 @@
 package com.example.kimochinikki.ui.diary
 
 import android.R
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.kimochinikki.databinding.FragmentDiaryBinding
 import android.widget.ListView
+import com.example.kimochinikki.SignActivity
 import com.example.kimochinikki.bean.DiaryBean
 import com.example.kimochinikki.adapter.DiaryArrayAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class DiaryFragment : Fragment() {
     private lateinit var listView: ListView
@@ -33,6 +36,14 @@ class DiaryFragment : Fragment() {
 
         val diarylist = ArrayList<DiaryBean>()
         diarylist.add(DiaryBean("5/15", "aaaa"))
+
+        binding.fabAddnewdiary.setOnClickListener { view ->
+            val intent = Intent()
+
+            intent.setClass(requireContext(), AddNewDiaryActivity::class.java)
+
+            startActivity(intent)
+        }
 
         listView = binding.lvDiary
 

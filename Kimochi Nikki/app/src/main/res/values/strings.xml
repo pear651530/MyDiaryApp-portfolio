@@ -5,7 +5,12 @@
     <string name="userid">帳號</string>
     <string name="userpassword">密碼</string>
     <string name="username">名稱</string>
+    <string name="userkey">日記鎖</string>
     <string name="select_image">選擇圖片</string>
+    <string name="diary_title">標題</string>
+    <string name="diary_time">時間</string>
+    <string name="diary_text">內容</string>
+    <string name="add_diary">加入新日記</string>
     <string name="alt_title">授予權限</string>
     <string name="alt_text">是否要讓應用程式存取媒體庫</string>
     <string name="alt_yes">是</string>

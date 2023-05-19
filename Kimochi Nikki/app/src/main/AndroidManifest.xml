@@ -17,6 +17,9 @@
             android:name=".SignActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.diary.AddNewDiaryActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="false"
             android:theme="@style/Theme.KimochiNikki.NoActionBar" />
