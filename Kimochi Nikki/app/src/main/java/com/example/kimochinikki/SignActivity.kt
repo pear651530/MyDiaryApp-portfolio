@@ -1,5 +1,6 @@
 package com.example.kimochinikki
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -19,6 +20,8 @@ import com.google.firebase.storage.ktx.storage
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class SignActivity : AppCompatActivity() {
@@ -28,6 +31,8 @@ class SignActivity : AppCompatActivity() {
     private  var storageRef= Firebase.storage
     private lateinit var uri: Uri
     private val PICK_IMAGE_REQUEST = 1
+    //lateinit var binding:ActivitystorageBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign)
@@ -100,7 +105,13 @@ class SignActivity : AppCompatActivity() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             val selectedImageUri: Uri = data.data ?: return
+          //  Log.e("pic",uri.toString())
             cropImage(selectedImageUri)
+            Log.e("pic",selectedImageUri.toString())
+            if(selectedImageUri!=null)
+                UploadImage(selectedImageUri)
+
+
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             val croppedImageUri = UCrop.getOutput(data!!)
             displayCroppedImage(croppedImageUri)
@@ -129,6 +140,25 @@ class SignActivity : AppCompatActivity() {
                 .into(select_img)
         } catch (e: IOException) {
             e.printStackTrace()
+        }
+    }
+    fun UploadImage(uri: Uri?) {
+        if(uri!=null) {
+            //var pd= ProgressDialog(this)
+           // pd.setTitle("uploadimg")
+          //  pd.show()
+            val storageRef = FirebaseStorage.getInstance().reference
+           // Log.d("URI", uri.toString())
+            val formatter=SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
+            val now=Date()
+            val file_name=formatter.format(now)
+            val task = storageRef.child("images/$file_name").putFile(uri)
+            task.addOnSuccessListener {
+
+                Log.d("UploadImage", "Task Is Successful")
+            }.addOnFailureListener {
+                Log.d("UploadImageFail", "Image Upload Failed ${it.printStackTrace()}")
+            }
         }
     }
 }

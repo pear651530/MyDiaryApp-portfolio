@@ -4,4 +4,9 @@ plugins {
     id 'com.android.library' version '7.4.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
     id 'com.google.gms.google-services' version '4.3.15' apply false
+    //id 'com.google.firebase.firebase-auth-ktx' version '21.3.0' apply false
+    //id 'com.google.firebase.firebase-analytics-ktx'version'21.2.2'apply false
+    //id 'com.google.firebase.firebase-auth-ktx'version '22.0.0' apply false
+//    id 'com.android.tools.build:gradle:'version'2.2.3' apply false
+    //id "org.jetbrains.kotlin:kotlin-gradle-plugin" version "$kotlin_version"
 }

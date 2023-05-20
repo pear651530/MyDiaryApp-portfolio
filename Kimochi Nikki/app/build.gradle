@@ -32,7 +32,8 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        viewBinding true
+        viewBinding=true
+        dataBinding true
     }
 }
 
@@ -58,6 +59,12 @@ dependencies {
   //  implementation platform('com.google.firebase:firebase-bom:31.5.0')
     implementation 'com.google.firebase:firebase-firestore-ktx:24.5.0'
     implementation 'com.google.firebase:firebase-storage-ktx:20.2.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
+    //implementation'com.google.firebase:firebase-crashlytics-ktx:18.3.7'
+
+    //implementation("com.google.firebase:firebase-analytics-ktx")
+    //implementation("com.google.firebase:firebase-crashlytics-ktx")
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation 'com.github.yalantis:ucrop:2.2.6'
     implementation 'com.google.android.material:material:1.6.0'

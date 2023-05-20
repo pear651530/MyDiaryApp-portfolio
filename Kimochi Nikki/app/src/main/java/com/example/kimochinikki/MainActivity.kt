@@ -5,22 +5,42 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.*
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.kimochinikki.databinding.ActivityMainBinding
+import com.example.kimochinikki.ui.ProfileActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import android.widget.Button
 
 
 class MainActivity : AppCompatActivity() {
 
     val db = Firebase.firestore
+    private lateinit var  binding : ActivityMainBinding
+    private lateinit var  actionBar: ActionBar
+    private lateinit var  firebaseAuth: FirebaseAuth
+
+    private var email=""
+    private var password=""
+    //val edittext_userid = findViewById<EditText>(R.id.edittext_userid)
+   // val edittextuser_password = findViewById<EditText>(R.id.edittextuser_password)
+
     val TAG="wrong"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding=ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
+//configure actionbar
+        actionBar=supportActionBar!!
+        actionBar.title="login"
+//configure progress dialog
+       // progressDialog
 
-        val intent = Intent(this, LoadingActivity::class.java)
-        startActivity(intent)
+//init firebaseAuth
+
 
         val gif_book = findViewById<ImageView>(R.id.gif_book)
         Glide.with(this).load(R.drawable.book).into(gif_book)
@@ -29,6 +49,19 @@ class MainActivity : AppCompatActivity() {
         val btn_sign = findViewById<Button>(R.id.btn_sign)
         //LoginButton.setOnClickListener{gohome()}
         // 设置按钮的触摸监听器
+        firebaseAuth=FirebaseAuth.getInstance()
+        checkUser()
+        binding.noAccountTv.setOnClickListener{
+            startActivity(Intent(this,SignActivity::class.java))
+        }
+
+        btn_login.setOnClickListener{
+            //validateData()
+        }
+
+
+        val intent = Intent(this, LoadingActivity::class.java)
+        startActivity(intent)
         btn_login.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -65,6 +98,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             true
+        }
+    }
+
+    private fun validateData(){
+      // email=binding.edittext_userid.text.toString().trim()
+      // password=binding.edittextuser_password.text.toString().trim()
+    }
+
+    private fun checkUser(){
+      val firebaseUse=firebaseAuth.currentUser
+        if(firebaseUse!=null)
+        {
+            startActivity(Intent(this, ProfileActivity::class.java))
+            finish()
         }
     }
 
