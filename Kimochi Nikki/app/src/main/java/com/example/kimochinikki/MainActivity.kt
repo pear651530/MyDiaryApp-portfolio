@@ -1,8 +1,11 @@
 package com.example.kimochinikki
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.view.MotionEvent
 import android.widget.*
 import androidx.appcompat.app.ActionBar
@@ -17,7 +20,9 @@ import android.widget.Button
 
 
 class MainActivity : AppCompatActivity() {
+    val TAG="wrong"
 
+    //for 後端
     val db = Firebase.firestore
     private lateinit var  binding : ActivityMainBinding
     private lateinit var  actionBar: ActionBar
@@ -25,23 +30,22 @@ class MainActivity : AppCompatActivity() {
 
     private var email=""
     private var password=""
-    //val edittext_userid = findViewById<EditText>(R.id.edittext_userid)
-   // val edittextuser_password = findViewById<EditText>(R.id.edittextuser_password)
-
-    val TAG="wrong"
+    private lateinit var edittext_userid: EditText
+    private lateinit var edittextuser_password: EditText
+    private lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
 //configure actionbar
-        actionBar=supportActionBar!!
-        actionBar.title="login"
+         actionBar=supportActionBar!!
+         actionBar.title="login"
 //configure progress dialog
-       // progressDialog
-
+        progressDialog= ProgressDialog(this)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Logging In...")
+        progressDialog.setCanceledOnTouchOutside(false)
 //init firebaseAuth
-
-
         val gif_book = findViewById<ImageView>(R.id.gif_book)
         Glide.with(this).load(R.drawable.book).into(gif_book)
 
@@ -50,31 +54,34 @@ class MainActivity : AppCompatActivity() {
         //LoginButton.setOnClickListener{gohome()}
         // 设置按钮的触摸监听器
         firebaseAuth=FirebaseAuth.getInstance()
-        checkUser()
-        binding.noAccountTv.setOnClickListener{
+         checkUser()
+         binding.noAccountTv.setOnClickListener{
             startActivity(Intent(this,SignActivity::class.java))
-        }
-
-        btn_login.setOnClickListener{
-            //validateData()
-        }
+             finish()
+         }
 
 
-        val intent = Intent(this, LoadingActivity::class.java)
-        startActivity(intent)
+         btn_login.setOnClickListener{
+             validateData()
+         }
+///check validate
+
+//動畫要留!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 芷柔
+   //    val intent = Intent(this, LoadingActivity::class.java)
+        //startActivity(intent)
         btn_login.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     // 按下按钮时将背景色更改为深蓝色
                     btn_login.setBackgroundResource(R.drawable.rounded_button_click)
-                    test()
+                    //test()
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     // 松开按钮时将背景色恢复为半透明黑色
                     btn_login.setBackgroundResource(R.drawable.rounded_button)
                     if (event.action == MotionEvent.ACTION_UP) {
                         // 执行按钮被点击时的操作
-                        gohome()
+                         gohome()
                     }
                 }
             }
@@ -86,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 MotionEvent.ACTION_DOWN -> {
                     // 按下按钮时将背景色更改为深蓝色
                     btn_sign.setBackgroundResource(R.drawable.rounded_button_click)
-                    test()
+                    //test()
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     // 松开按钮时将背景色恢复为半透明黑色
@@ -101,55 +108,82 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun validateData(){
-      // email=binding.edittext_userid.text.toString().trim()
-      // password=binding.edittextuser_password.text.toString().trim()
-    }
+     private fun validateData(){
+         edittext_userid = findViewById<EditText>(R.id.edittext_userid)
+         edittextuser_password = findViewById<EditText>(R.id.edittextuser_password)
+         email=edittext_userid.text.toString().trim()
+         password=edittextuser_password.text.toString().trim()
+         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+         {
+             //invaild email format
+             edittext_userid.error="Invalid email format"
+         }else if(TextUtils.isEmpty(password))
+         {
+             edittextuser_password.error="Please enter password"
+         }else {
+            firebase_login()
+         }
+     }
+     private fun firebase_login(){
+         progressDialog.show()
+         firebaseAuth.signInWithEmailAndPassword(email,password)
+             .addOnSuccessListener {
+                 progressDialog.dismiss()
+                 val firebaseUser=firebaseAuth.currentUser
+                 val email=firebaseUser!!.email
+                 Toast.makeText(this,"LoggedIn as $email",Toast.LENGTH_SHORT).show()
+                 startActivity(Intent(this,HomeActivity::class.java))
+                 finish()
+             }.addOnFailureListener{e->
+                 progressDialog.dismiss()
+                 Toast.makeText(this,"logi failed due to ${e.message}",Toast.LENGTH_SHORT).show()
+             }
+     }
 
-    private fun checkUser(){
-      val firebaseUse=firebaseAuth.currentUser
-        if(firebaseUse!=null)
-        {
-            startActivity(Intent(this, ProfileActivity::class.java))
-            finish()
-        }
-    }
+     private fun checkUser(){
+       val firebaseUse=firebaseAuth.currentUser
+         if(firebaseUse!=null)
+         {
+             startActivity(Intent(this, HomeActivity::class.java))
+             finish()
+         }
+     }
 
-    private fun gohome(){
-        val intent = Intent()
-        intent.setClass(this@MainActivity, HomeActivity::class.java)
-        startActivity(intent)
-    }
+     private fun gohome(){
+         val intent = Intent()
+         intent.setClass(this@MainActivity, HomeActivity::class.java)
+         startActivity(intent)
+     }
 
-    private fun gosign(){
-        val intent = Intent()
+     private fun gosign(){
+         val intent = Intent()
+ //sigin!!!!!
+        intent.setClass(this@MainActivity,SignActivity::class.java)
 
-        intent.setClass(this@MainActivity, SignActivity::class.java)
-
-        startActivity(intent)
-    }
-
-
-
-    private fun test(){
-     // Create a new user with a first and last name
-val user = hashMapOf(
-        "first" to "Ada",
-        "last" to "Lovelace",
-        "born" to 1815
-)
-        Log.e(TAG, "QQQQQ")
-// Add a new document with a generated ID
-db.collection("users")
-    .add(user)
-    .addOnSuccessListener { documentReference ->
-        Log.e(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-    }
-    .addOnFailureListener { e ->
-        Log.e(TAG, "Error adding document", e)
-    }
-        Log.e(TAG, "eeeeeeeeeeeeeee")
+         startActivity(intent)
+     }
 
 
-    }
+
+     private fun test(){
+      // Create a new user with a first and last name
+ val user = hashMapOf(
+         "first" to "Ada",
+         "last" to "Lovelace",
+         "born" to 1815
+ )
+         Log.e(TAG, "QQQQQ")
+ // Add a new document with a generated ID
+ db.collection("users")
+     .add(user)
+     .addOnSuccessListener { documentReference ->
+         Log.e(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+     }
+     .addOnFailureListener { e ->
+         Log.e(TAG, "Error adding document", e)
+     }
+         Log.e(TAG, "eeeeeeeeeeeeeee")
+
+
+     }
 }

@@ -47,8 +47,8 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textFilter"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                android:hint="email"
+                android:inputType="textEmailAddress"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -78,9 +78,9 @@
                 android:id="@+id/edittextuser_password"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:hint="password"
                 android:ems="10"
-                android:inputType="textFilter"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                android:inputType="textPassword"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>

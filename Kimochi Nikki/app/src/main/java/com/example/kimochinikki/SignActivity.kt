@@ -2,18 +2,25 @@ package com.example.kimochinikki
 
 import android.app.ProgressDialog
 import android.content.Context
+import androidx.appcompat.app.ActionBar
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.kimochinikki.databinding.ActivitySignBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -31,17 +38,40 @@ class SignActivity : AppCompatActivity() {
     private  var storageRef= Firebase.storage
     private lateinit var uri: Uri
     private val PICK_IMAGE_REQUEST = 1
-    //lateinit var binding:ActivitystorageBinding
-
+    
+   // private lateinit var binding: ActivitySignBinding
+   //
+   // private lateinit var  actionBar: ActionBar
+    private lateinit var progressDialog: ProgressDialog
+    private lateinit var firebaseAuth: FirebaseAuth
+    private var email=""
+    private var password=""
+    private lateinit var sign_userid: EditText
+    private lateinit var sign_password: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+     //   binding=ActivitySignBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_sign)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) //返回鍵啟用
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true) //返回鍵啟用
 
         select_img=findViewById(R.id.select_img)
         btn_sign=findViewById(R.id.btn_sign)
         select_btn=findViewById(R.id.select_btn)
+
+       // actionBar=supportActionBar!!
+     //   actionBar.title="Sign Up"
+        //enable actionbar ,enable back button
+    //    actionBar.setDisplayHomeAsUpEnabled(true)
+      //  actionBar.setDisplayShowHomeEnabled(true)
+
+        //configure progress dialog
+        progressDialog= ProgressDialog(this)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Create account In...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        //init firebase auth
+        firebaseAuth=FirebaseAuth.getInstance()
 
         Glide.with(this)
             .load(R.drawable.head_preimg)
@@ -49,15 +79,8 @@ class SignActivity : AppCompatActivity() {
             .into(select_img)
 
         storageRef= FirebaseStorage.getInstance()
-        /*private val pickImage = 100
-        var galleryImage=registerForActivityResult(
-          ActivityResultContracts.GetContent(),
-            ActivityResultCallback{
-                select_img.setImageURI(it)
-                Log.e("image ",it.toString())
-               // uri=it
-            })
-*/
+
+
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             // Callback is invoked after the user selects a media item or closes the
             // photo picker.
@@ -73,17 +96,58 @@ class SignActivity : AppCompatActivity() {
         }
 
        // select_btn.setOnClickListener{galleryImage.launch("image/*")}
-/*
+
        btn_sign.setOnClickListener{
-            storageRef.getReference("images").child(System.currentTimeMillis().toString())
+           /* storageRef.getReference("images").child(System.currentTimeMillis().toString())
                 .putFile(uri)
                 .addOnSuccessListener{task->task.metadata!!.reference!!.downloadUrl
                     .addOnSuccessListener {
                     }
-                }
+                }*/
+           validdateData()
 
-        }*/
+        }
     }
+    private fun validdateData(){
+        //get data
+    //Log.e("      ewwew","eqwe      ")
+        sign_userid = findViewById<EditText>(R.id.sign_userid)
+        sign_password = findViewById<EditText>(R.id.sign_password)
+        email=sign_userid.text.toString().trim()
+        password=sign_password.text.toString().trim()
+        Log.e("1111111 ",email)
+        Log.e("32   ",password)
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            sign_userid.error="Invaild email format"
+        }else if(TextUtils.isEmpty(password)){
+            sign_password.error="Please enter password"
+        }else if(password.length<6)
+        {// too short
+            sign_password.error="Password must at least 6 chracters long"
+        }else{
+            firebaseSignUp()
+        }
+    }
+    private fun firebaseSignUp(){
+        progressDialog.show()
+        firebaseAuth.createUserWithEmailAndPassword(email,password)
+            .addOnSuccessListener{
+                progressDialog.dismiss()
+                val firebaseUser=firebaseAuth.currentUser
+                val email=firebaseUser!!.email
+                Toast.makeText(this,"Account create with $email",Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this,HomeActivity::class.java))
+            }
+            .addOnFailureListener {e->
+                progressDialog.dismiss()
+                Toast.makeText(this,"ssign failed due to ${e.message}",Toast.LENGTH_SHORT).show()
+            }
+
+    }
+    /*override fun onSuportNavigateUp():Boolean{
+        onBackPressed()//go back to previous activity
+        return super.onSupportNavigateUp()
+    }*/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
