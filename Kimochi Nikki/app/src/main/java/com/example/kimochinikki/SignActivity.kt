@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.kimochinikki.databinding.ActivitySignBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -32,11 +33,14 @@ import java.util.*
 
 
 class SignActivity : AppCompatActivity() {
+    val TAG="wrong"
+
     private lateinit var select_img: ImageView
     private lateinit var select_btn: Button
     private lateinit var btn_sign: Button
     private  var storageRef= Firebase.storage
     private lateinit var uri: Uri
+    private lateinit var wait_sign_btn: Uri
     private val PICK_IMAGE_REQUEST = 1
     
    // private lateinit var binding: ActivitySignBinding
@@ -48,11 +52,15 @@ class SignActivity : AppCompatActivity() {
     private var password=""
     private lateinit var sign_userid: EditText
     private lateinit var sign_password: EditText
+    private lateinit var edittext_username: EditText
+
+    ///firebase
+    val db = Firebase.firestore
+    var choose_img=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
      //   binding=ActivitySignBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_sign)
-
         //supportActionBar?.setDisplayHomeAsUpEnabled(true) //返回鍵啟用
 
         select_img=findViewById(R.id.select_img)
@@ -135,6 +143,33 @@ class SignActivity : AppCompatActivity() {
                 progressDialog.dismiss()
                 val firebaseUser=firebaseAuth.currentUser
                 val email=firebaseUser!!.email
+
+                edittext_username = findViewById<EditText>(R.id.edittext_username)
+                val username=edittext_username.text.toString().trim()
+//upload img
+                var  getimgpath:String? = null
+                if (choose_img==1)
+                    getimgpath=UploadImage(wait_sign_btn)
+                // Create a new user with a first and last name
+                val user = hashMapOf(
+                    "email" to email.toString(),
+                    "name" to username,
+                    "password" to password,
+                    "img_url" to getimgpath,
+
+                )
+
+// Add a new document with a generated ID
+                db.collection("users")
+                    .add(user)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Error adding document", e)
+                    }
+
+
                 Toast.makeText(this,"Account create with $email",Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this,HomeActivity::class.java))
             }
@@ -172,9 +207,10 @@ class SignActivity : AppCompatActivity() {
           //  Log.e("pic",uri.toString())
             cropImage(selectedImageUri)
             Log.e("pic",selectedImageUri.toString())
-            if(selectedImageUri!=null)
-                UploadImage(selectedImageUri)
-
+            if(selectedImageUri!=null) {
+                choose_img=1
+                wait_sign_btn=selectedImageUri
+            }
 
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             val croppedImageUri = UCrop.getOutput(data!!)
@@ -206,16 +242,19 @@ class SignActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-    fun UploadImage(uri: Uri?) {
+    fun UploadImage(uri: Uri?):String {
+        var path="failed"
         if(uri!=null) {
             //var pd= ProgressDialog(this)
            // pd.setTitle("uploadimg")
           //  pd.show()
+            var succ=0
             val storageRef = FirebaseStorage.getInstance().reference
            // Log.d("URI", uri.toString())
             val formatter=SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
             val now=Date()
             val file_name=formatter.format(now)
+            path="images/$file_name"
             val task = storageRef.child("images/$file_name").putFile(uri)
             task.addOnSuccessListener {
 
@@ -223,6 +262,9 @@ class SignActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 Log.d("UploadImageFail", "Image Upload Failed ${it.printStackTrace()}")
             }
+            /////////////////
+////////////////////
         }
+        return path
     }
 }

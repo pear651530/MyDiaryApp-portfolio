@@ -167,6 +167,16 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/rongtry"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#fd5f00"
+            android:gravity="center"
+            android:text="232213dd4"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <GridView
             android:id="@+id/gv"
