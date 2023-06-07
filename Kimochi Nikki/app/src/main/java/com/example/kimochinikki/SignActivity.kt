@@ -61,13 +61,13 @@ class SignActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
      //   binding=ActivitySignBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_sign)
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true) //返回鍵啟用
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) //返回鍵啟用
 
         select_img=findViewById(R.id.select_img)
         btn_sign=findViewById(R.id.btn_sign)
         select_btn=findViewById(R.id.select_btn)
 
-       // actionBar=supportActionBar!!
+       // actionBar=supportActionBar!!D
      //   actionBar.title="Sign Up"
         //enable actionbar ,enable back button
     //    actionBar.setDisplayHomeAsUpEnabled(true)
