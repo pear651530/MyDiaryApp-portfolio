@@ -1,24 +1,20 @@
 package com.example.kimochinikki.adapter
 
-import android.content.Intent
-import android.os.Bundle
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import android.content.Context
-import android.widget.TextView
 import android.graphics.Color
 import android.graphics.Typeface
-import android.view.*
-import com.example.kimochinikki.bean.DayBean
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.kimochinikki.R
-
+import com.example.kimochinikki.bean.DayBean
+import android.util.Log
 class DayAdapter(val list: List<DayBean>, val context: Context) : BaseAdapter() {
     override fun getCount(): Int {
         return list.size
@@ -31,7 +27,13 @@ class DayAdapter(val list: List<DayBean>, val context: Context) : BaseAdapter() 
     override fun getItemId(position: Int): Long {
         return 0
     }
-
+    companion object {
+        private const val TAG = "!!!!!!!!!!!!!!!!!!!"
+    }
+    private var onDateItemClickListener: OnDateItemClickListener? = null
+    fun setOnDateItemClickListener(listener: OnDateItemClickListener) {
+        onDateItemClickListener = listener
+    }
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         val inflater = LayoutInflater.from(context)
         var itemlayout: LinearLayout? = null
@@ -44,6 +46,7 @@ class DayAdapter(val list: List<DayBean>, val context: Context) : BaseAdapter() 
         val bean = getItem(position) as DayBean
 
         val textView: TextView = itemlayout?.findViewById(R.id.dayTextView)!!
+
         textView.text = bean.day.toString()
         textView.gravity = Gravity.CENTER
         textView.setTextColor(Color.BLACK)
@@ -64,6 +67,13 @@ class DayAdapter(val list: List<DayBean>, val context: Context) : BaseAdapter() 
         val imageView: ImageView = itemlayout?.findViewById(R.id.iconImageView)!!
         Glide.with(context).load(R.drawable.ic_menu_home).into(imageView)
 
+        itemlayout.setOnClickListener {
+            onDateItemClickListener?.onDateItemClick(bean)
+        }
         return itemlayout
+    }
+
+    interface OnDateItemClickListener {
+        fun onDateItemClick(date: DayBean)
     }
 }

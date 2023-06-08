@@ -60,10 +60,6 @@ class HomeActivity : AppCompatActivity() {
             // FirebaseUser.getIdToken() instead.
             val uid = it.uid
 
-
-            rongtry = findViewById<EditText>(R.id.rongtry)
-            rongtry.setText(email.toString())
-
         }
 
  /////////////////////

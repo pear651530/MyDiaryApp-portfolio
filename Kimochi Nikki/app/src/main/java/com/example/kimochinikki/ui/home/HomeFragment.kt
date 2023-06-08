@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
-
+import kotlin.random.Random
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -32,6 +32,110 @@ class HomeFragment : Fragment() {
     private lateinit var tvPreMonth: TextView
     private lateinit var tvNextMonth: TextView
     private lateinit var gv: GridView
+
+    val QuotationsSimleId = intArrayOf(
+        com.example.kimochinikki.R.string.quotations_simle1,
+        com.example.kimochinikki.R.string.quotations_simle2,
+        com.example.kimochinikki.R.string.quotations_simle3,
+        com.example.kimochinikki.R.string.quotations_simle4,
+        com.example.kimochinikki.R.string.quotations_simle5,
+        com.example.kimochinikki.R.string.quotations_simle6,
+        com.example.kimochinikki.R.string.quotations_simle7,
+        com.example.kimochinikki.R.string.quotations_simle8,
+        com.example.kimochinikki.R.string.quotations_simle9,
+        com.example.kimochinikki.R.string.quotations_simle10
+    )
+
+    val QuotationsSadId = intArrayOf(
+        com.example.kimochinikki.R.string.quotations_sad1,
+        com.example.kimochinikki.R.string.quotations_sad2,
+        com.example.kimochinikki.R.string.quotations_sad3,
+        com.example.kimochinikki.R.string.quotations_sad4,
+        com.example.kimochinikki.R.string.quotations_sad5,
+        com.example.kimochinikki.R.string.quotations_sad6,
+        com.example.kimochinikki.R.string.quotations_sad7,
+        com.example.kimochinikki.R.string.quotations_sad8,
+        com.example.kimochinikki.R.string.quotations_sad9,
+        com.example.kimochinikki.R.string.quotations_sad10
+    )
+
+    val QuotationsAngryId = intArrayOf(
+        com.example.kimochinikki.R.string.quotations_angry1,
+        com.example.kimochinikki.R.string.quotations_angry2,
+        com.example.kimochinikki.R.string.quotations_angry3,
+        com.example.kimochinikki.R.string.quotations_angry4,
+        com.example.kimochinikki.R.string.quotations_angry5,
+        com.example.kimochinikki.R.string.quotations_angry6,
+        com.example.kimochinikki.R.string.quotations_angry7,
+        com.example.kimochinikki.R.string.quotations_angry8,
+        com.example.kimochinikki.R.string.quotations_angry9,
+        com.example.kimochinikki.R.string.quotations_angry10
+    )
+
+    val QuotationsHeartId = intArrayOf(
+        com.example.kimochinikki.R.string.quotations_heart1,
+        com.example.kimochinikki.R.string.quotations_heart2,
+        com.example.kimochinikki.R.string.quotations_heart3,
+        com.example.kimochinikki.R.string.quotations_heart4,
+        com.example.kimochinikki.R.string.quotations_heart5,
+        com.example.kimochinikki.R.string.quotations_heart6,
+        com.example.kimochinikki.R.string.quotations_heart7,
+        com.example.kimochinikki.R.string.quotations_heart8,
+        com.example.kimochinikki.R.string.quotations_heart9,
+        com.example.kimochinikki.R.string.quotations_heart10
+    )
+
+    val SuggestionsSimleId = intArrayOf(
+        com.example.kimochinikki.R.string.suggestions_simle1,
+        com.example.kimochinikki.R.string.suggestions_simle2,
+        com.example.kimochinikki.R.string.suggestions_simle3,
+        com.example.kimochinikki.R.string.suggestions_simle4,
+        com.example.kimochinikki.R.string.suggestions_simle5,
+        com.example.kimochinikki.R.string.suggestions_simle6,
+        com.example.kimochinikki.R.string.suggestions_simle7,
+        com.example.kimochinikki.R.string.suggestions_simle8,
+        com.example.kimochinikki.R.string.suggestions_simle9,
+        com.example.kimochinikki.R.string.suggestions_simle10
+    )
+
+    val SuggestionsSadId = intArrayOf(
+        com.example.kimochinikki.R.string.suggestions_sad1,
+        com.example.kimochinikki.R.string.suggestions_sad2,
+        com.example.kimochinikki.R.string.suggestions_sad3,
+        com.example.kimochinikki.R.string.suggestions_sad4,
+        com.example.kimochinikki.R.string.suggestions_sad5,
+        com.example.kimochinikki.R.string.suggestions_sad6,
+        com.example.kimochinikki.R.string.suggestions_sad7,
+        com.example.kimochinikki.R.string.suggestions_sad8,
+        com.example.kimochinikki.R.string.suggestions_sad9,
+        com.example.kimochinikki.R.string.suggestions_sad10
+    )
+
+    val SuggestionsAngryId = intArrayOf(
+        com.example.kimochinikki.R.string.suggestions_angry1,
+        com.example.kimochinikki.R.string.suggestions_angry2,
+        com.example.kimochinikki.R.string.suggestions_angry3,
+        com.example.kimochinikki.R.string.suggestions_angry4,
+        com.example.kimochinikki.R.string.suggestions_angry5,
+        com.example.kimochinikki.R.string.suggestions_angry6,
+        com.example.kimochinikki.R.string.suggestions_angry7,
+        com.example.kimochinikki.R.string.suggestions_angry8,
+        com.example.kimochinikki.R.string.suggestions_angry9,
+        com.example.kimochinikki.R.string.suggestions_angry10
+    )
+
+    val SuggestionsHeartId = intArrayOf(
+        com.example.kimochinikki.R.string.suggestions_heart1,
+        com.example.kimochinikki.R.string.suggestions_heart2,
+        com.example.kimochinikki.R.string.suggestions_heart3,
+        com.example.kimochinikki.R.string.suggestions_heart4,
+        com.example.kimochinikki.R.string.suggestions_heart5,
+        com.example.kimochinikki.R.string.suggestions_heart6,
+        com.example.kimochinikki.R.string.suggestions_heart7,
+        com.example.kimochinikki.R.string.suggestions_heart8,
+        com.example.kimochinikki.R.string.suggestions_heart9,
+        com.example.kimochinikki.R.string.suggestions_heart10
+    )
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -85,6 +189,15 @@ class HomeFragment : Fragment() {
     private fun initAdapter() {
         val dataList = ArrayList<DayBean>()
         val adapter = DayAdapter(dataList, requireContext())
+        adapter.setOnDateItemClickListener(object : DayAdapter.OnDateItemClickListener { //改文字!!!
+            override fun onDateItemClick(date: DayBean) {
+                binding.textviewAverage.text=date.day.toString()
+                var randomValue = Random.nextInt(10)
+                binding.textviewQuotations.text=getString(QuotationsSimleId[randomValue])
+                randomValue = Random.nextInt(10)
+                binding.textviewSuggestions.text=getString(SuggestionsSimleId[randomValue])
+            }
+        })
         gv.adapter = adapter
         val calendar = Calendar.getInstance()
         setCurrentData(calendar)
