@@ -11,7 +11,7 @@
     <string name="diary_title">標題</string>
     <string name="diary_time">時間</string>
     <string name="diary_text">內容</string>
-    <string name="add_diary">加入新日記</string>
+    <string name="add_diary">加入當天日記</string>
     <string name="alt_title">授予權限</string>
     <string name="alt_text">是否要讓應用程式存取媒體庫</string>
     <string name="alt_yes">是</string>
@@ -115,6 +115,7 @@
     <string name="suggestions_heart10">擁抱生命的變化和轉折，相信每一次心動都會帶領你更接近真正的幸福和成就。</string>
     <string name="menu_touch">教學</string>
     <string name="menu_setting">個人設置</string>
+    <string name="change">修改</string>
     <string name="title_activity_trytry">trytry</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
