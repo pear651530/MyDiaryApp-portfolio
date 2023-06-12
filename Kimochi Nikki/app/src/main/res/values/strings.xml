@@ -3,7 +3,7 @@
     <string name="login">登入</string>
     <string name="logout">登出</string>
     <string name="sign">註冊</string>
-    <string name="userid">帳號</string>
+    <string name="userid">信箱</string>
     <string name="userpassword">密碼</string>
     <string name="username">名稱</string>
     <string name="userkey">日記鎖</string>
