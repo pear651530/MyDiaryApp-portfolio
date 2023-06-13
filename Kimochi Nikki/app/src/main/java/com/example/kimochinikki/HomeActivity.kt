@@ -45,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
  ///// rong try
 
-        val user = Firebase.auth.currentUser
+        /*val user = Firebase.auth.currentUser
         user?.let {
             // Name, email address, and profile photo Url
             val name = it.displayName
@@ -60,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
             // FirebaseUser.getIdToken() instead.
             val uid = it.uid
 
-        }
+        }*/
 
  /////////////////////
     }

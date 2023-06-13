@@ -27,6 +27,16 @@
             android:textColor="#fff"
             android:textSize="18sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/rong_try"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#fd5f00"
+            android:gravity="center"
+            android:text="xzxzxzx"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"

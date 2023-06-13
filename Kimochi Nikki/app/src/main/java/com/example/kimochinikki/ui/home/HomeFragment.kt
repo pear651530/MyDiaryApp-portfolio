@@ -18,6 +18,8 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import kotlin.random.Random
 class HomeFragment : Fragment() {
@@ -32,6 +34,7 @@ class HomeFragment : Fragment() {
     private lateinit var tvPreMonth: TextView
     private lateinit var tvNextMonth: TextView
     private lateinit var gv: GridView
+    private lateinit var rong_try: TextView
 
     val QuotationsSimleId = intArrayOf(
         com.example.kimochinikki.R.string.quotations_simle1,
@@ -174,6 +177,28 @@ class HomeFragment : Fragment() {
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
             cellView.addView(imageView, layoutParams)
         }*/
+
+        //val textView = findViewById<TextView>(R.id.rong_try)
+        ///R.id.imageView.setImageResource(R.drawable.image);
+
+        val user = Firebase.auth.currentUser
+        user?.let {
+            // Name, email address, and profile photo Url
+            val name = it.displayName
+            val email = it.email
+            val photoUrl = it.photoUrl
+
+            // Check if user's email is verified
+            val emailVerified = it.isEmailVerified
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            val uid = it.uid
+
+        }
+        //binding.rongTry.setText()
+
 
         return root
     }

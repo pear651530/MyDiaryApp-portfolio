@@ -46,6 +46,25 @@ class SettingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+///////user
+
+        val user = Firebase.auth.currentUser
+        user?.let {
+            // Name, email address, and profile photo Url
+            val user_name = it.displayName
+            val user_email = it.email
+            val user_photoUrl = it.photoUrl
+
+            // Check if user's email is verified
+            val emailVerified = it.isEmailVerified
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            val user_uid = it.uid
+
+        }
+////////////
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -53,7 +72,7 @@ class SettingFragment : Fragment() {
         btn_sign_out.setOnClickListener {
             signOut()
         }
-
+        //binding.nowUsername.text = user_email
         now_img = binding.nowImg
         Glide.with(this)
             .load(R.drawable.head_preimg)
@@ -105,8 +124,10 @@ class SettingFragment : Fragment() {
         // 添加确定按钮
         builder.setPositiveButton("确定") { dialog, which ->
             val userInput = input1.text.toString()
-            if (input1.text.toString() == input2.text.toString()) binding.nowPassword.text = userInput
-            else {
+            if (input1.text.toString() == input2.text.toString()) {
+                binding.nowPassword.text = userInput
+
+            }else {
                 Toast.makeText(requireContext(), "兩次輸入不一致! 請重試一次", Toast.LENGTH_SHORT).show()
             }
         }
