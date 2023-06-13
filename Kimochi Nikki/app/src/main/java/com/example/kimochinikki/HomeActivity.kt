@@ -1,6 +1,7 @@
 package com.example.kimochinikki
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.EditText
 import android.widget.TextView
@@ -45,8 +46,9 @@ class HomeActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
  ///// rong try
 
-        /*val user = Firebase.auth.currentUser
-        user?.let {
+        val user = Firebase.auth.currentUser
+        Log.e("now err",user.toString())
+        /*user?.let {
             // Name, email address, and profile photo Url
             val name = it.displayName
             val email = it.email

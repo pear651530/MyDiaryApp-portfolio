@@ -137,8 +137,10 @@ class MainActivity : AppCompatActivity() {
              .addOnSuccessListener {
                  progressDialog.dismiss()
                  val firebaseUser=firebaseAuth.currentUser
+                 Log.e("nowsss err",firebaseUser.toString())
                  val email=firebaseUser!!.email
-                 Toast.makeText(this,"LoggedIn as $email",Toast.LENGTH_SHORT).show()
+                 val uid=firebaseUser!!.uid
+                 Toast.makeText(this,"LoggedIn as $uid",Toast.LENGTH_SHORT).show()
                  startActivity(Intent(this,HomeActivity::class.java))
                  finish()
              }.addOnFailureListener{e->

@@ -18,11 +18,15 @@ import com.example.kimochinikki.MainActivity
 import com.example.kimochinikki.R
 import com.example.kimochinikki.databinding.FragmentSettingBinding
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.IOException
-
+import com.google.firebase.FirebaseApp
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
 class SettingFragment : Fragment() {
 
@@ -46,24 +50,64 @@ class SettingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-///////user
+///////download user data from database
 
-        val user = Firebase.auth.currentUser
-        user?.let {
-            // Name, email address, and profile photo Url
-            val user_name = it.displayName
-            val user_email = it.email
-            val user_photoUrl = it.photoUrl
+        val firebaseUser = Firebase.auth.currentUser
+        val email=firebaseUser!!.email
+        val uid=firebaseUser!!.uid
+        val db = Firebase.firestore
+        //read
+        val docRef = db.collection("users").document(uid.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                   val  password = document.getString("password")
+                    val img_url: String? = document.getString("img_url")
+                    val name: String? = document.getString("name")
+                    val email: String? = document.getString("email")
+                    val key: String? = document.getString("key")
+                    _binding?.nowUserid!!.setText(email)
+                    _binding?.nowPassword!!.setText(password)
+                    _binding?.nowUsername!!.setText(name)
+                    _binding?.nowUserkey!!.setText(key)
+                    //Log.e("url",img_url.toString())
+                    if(img_url==null)
+                    {
+                        Log.e("url","is ull")
+                    }else
+                    {
+//get user image
+                        Log.e("url",img_url)
+                        val storage = Firebase.storage
+                          val storageRef = storage.reference.child(img_url.toString())
+                          storageRef.downloadUrl.addOnSuccessListener { uri ->
+                              val imageURL = uri.toString()
+                              // 在這裡使用 imageURL，例如顯示圖片或進行其他操作
+                            Log.e("temp ", imageURL)
+                            now_img= _binding?.nowImg!!
+                              //用url顯示圖片
+                              Glide.with(this)
+                                  .load(imageURL)
+                                  .into(now_img)
 
-            // Check if user's email is verified
-            val emailVerified = it.isEmailVerified
+                          }.addOnFailureListener { exception ->
+                              // 發生錯誤時的處理
+                          }
+//////////////////////
+                    }
 
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            val user_uid = it.uid
 
-        }
+                    Log.d("db message", "DocumentSnapshot data: ${document.data}")
+                } else {
+                    Log.d("db message", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("db message", "get failed with ", exception)
+            }
+        // 獲取數值
+
+
 ////////////
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
         val root: View = binding.root

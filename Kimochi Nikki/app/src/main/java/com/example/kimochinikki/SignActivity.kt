@@ -53,6 +53,7 @@ class SignActivity : AppCompatActivity() {
     private lateinit var sign_userid: EditText
     private lateinit var sign_password: EditText
     private lateinit var edittext_username: EditText
+    private lateinit var edittext_userkey: EditText
 
     ///firebase
     val db = Firebase.firestore
@@ -123,6 +124,12 @@ class SignActivity : AppCompatActivity() {
         sign_password = findViewById<EditText>(R.id.sign_password)
         email=sign_userid.text.toString().trim()
         password=sign_password.text.toString().trim()
+
+        edittext_username = findViewById<EditText>(R.id.edittext_username)
+       var user_name=edittext_username.text.toString().trim()
+        edittext_userkey = findViewById<EditText>(R.id.edittext_userkey)
+       var user_key=edittext_userkey.text.toString().trim()
+
         Log.e("1111111 ",email)
         Log.e("32   ",password)
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
@@ -132,9 +139,19 @@ class SignActivity : AppCompatActivity() {
         }else if(password.length<6)
         {// too short
             sign_password.error="Password must at least 6 chracters long"
+        }
+        else if(user_name.isEmpty())
+        {
+            edittext_username.error="清輸入名稱"
+
+        }else if(user_key.isEmpty())
+        {
+            edittext_userkey.error="清輸入日記鎖"
+
         }else{
             firebaseSignUp()
         }
+
     }
     private fun firebaseSignUp(){
         progressDialog.show()
@@ -143,9 +160,13 @@ class SignActivity : AppCompatActivity() {
                 progressDialog.dismiss()
                 val firebaseUser=firebaseAuth.currentUser
                 val email=firebaseUser!!.email
+                val uid=firebaseUser!!.uid
 
                 edittext_username = findViewById<EditText>(R.id.edittext_username)
                 val username=edittext_username.text.toString().trim()
+                edittext_userkey = findViewById<EditText>(R.id.edittext_userkey)
+                val user_key=edittext_userkey.text.toString().trim()
+
 //upload img
                 var  getimgpath:String? = null
                 if (choose_img==1)
@@ -156,19 +177,15 @@ class SignActivity : AppCompatActivity() {
                     "name" to username,
                     "password" to password,
                     "img_url" to getimgpath,
-
+                    "key" to user_key,
                 )
 
 // Add a new document with a generated ID
-                db.collection("users")
-                    .add(user)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "Error adding document", e)
-                    }
-
+                db.collection("users").document(uid.toString())
+                    .set(user)
+                    .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
+                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+                ////////////////////////////
 
                 Toast.makeText(this,"Account create with $email",Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this,HomeActivity::class.java))
