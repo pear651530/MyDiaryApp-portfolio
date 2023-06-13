@@ -40,7 +40,18 @@ class SettingFragment : Fragment() {
     private lateinit var btn_changeuserkey: Button
     private lateinit var wait_sign_btn: Uri
     private var choose_img = 0
-
+   //////// 芷柔
+    private lateinit  var user_password:String
+    private lateinit  var user_img_url:String
+    private lateinit  var user_name:String
+    private lateinit  var user_email:String
+    private lateinit  var user_key:String
+    /////////////
+    val db = Firebase.firestore
+    val firebaseUser = Firebase.auth.currentUser
+    val email=firebaseUser!!.email
+    val uid=firebaseUser!!.uid
+    val docRef = db.collection("users").document(uid.toString())
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
     }
@@ -51,36 +62,30 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 ///////download user data from database
-
-        val firebaseUser = Firebase.auth.currentUser
-        val email=firebaseUser!!.email
-        val uid=firebaseUser!!.uid
-        val db = Firebase.firestore
         //read
-        val docRef = db.collection("users").document(uid.toString())
-
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    val password = document.getString("password")
-                    val img_url: String? = document.getString("img_url")
-                    val name: String? = document.getString("name")
-                    val email: String? = document.getString("email")
-                    val key: String? = document.getString("key")
+
+                    user_password=document.getString("password")?:""
+                    user_img_url= document.getString("img_url")?:""
+                    user_name  = document.getString("name")?:""
+                    user_email = document.getString("email")?:""
+                    user_key = document.getString("key")?:""
                     _binding?.nowUserid!!.setText(email)
-                    _binding?.nowPassword!!.setText(password)
-                    _binding?.nowUsername!!.setText(name)
-                    _binding?.nowUserkey!!.setText(key)
+                    _binding?.nowPassword!!.setText(user_password)
+                    _binding?.nowUsername!!.setText(user_name)
+                    _binding?.nowUserkey!!.setText(user_key)
                     //Log.e("url",img_url.toString())
-                    if(img_url==null)
+                    if(user_img_url==null)
                     {
                         Log.e("url","is ull")
                     }else
                     {
 //get user image
-                        Log.e("url",img_url)
+                        Log.e("url",user_img_url)
                         val storage = Firebase.storage
-                          val storageRef = storage.reference.child(img_url.toString())
+                          val storageRef = storage.reference.child(user_img_url.toString())
                           storageRef.downloadUrl.addOnSuccessListener { uri ->
                               val imageURL = uri.toString()
                               // 在這裡使用 imageURL，例如顯示圖片或進行其他操作
@@ -98,7 +103,6 @@ class SettingFragment : Fragment() {
 //////////////////////
                     }
 
-
                     Log.d("db message", "DocumentSnapshot data: ${document.data}")
                 } else {
                     Log.d("db message", "No such document")
@@ -109,8 +113,6 @@ class SettingFragment : Fragment() {
             }
         // 獲取數值
 
-
-////////////
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -132,7 +134,7 @@ class SettingFragment : Fragment() {
 
         btn_changepassword = binding.btnChangepassword
         btn_changepassword.setOnClickListener {
-            changepassword("aaa")
+            changepassword()
         }
 
         btn_changeusername = binding.btnChangeusername
@@ -148,7 +150,7 @@ class SettingFragment : Fragment() {
         return root
     }
 
-    private fun changepassword(password: String) {
+    private fun changepassword() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("欲修改密碼")
 
@@ -174,8 +176,17 @@ class SettingFragment : Fragment() {
         // 添加确定按钮
         builder.setPositiveButton("确定") { dialog, which ->
             val userInput = input2.text.toString()
-            if (input1.text.toString() == password) {
+            if (input1.text.toString() == user_password) {
                 binding.nowPassword.text = userInput
+
+
+    //更新密碼 芷柔
+                docRef
+                    .update("password", userInput)
+                    .addOnSuccessListener { Log.d("update password", "DocumentSnapshot successfully updated!") }
+                    .addOnFailureListener { e -> Log.w("update password", "Error updating document", e) } 
+     //////////////////////////
+
             }else {
                 Toast.makeText(requireContext(), "舊密碼錯誤! 請重試一次", Toast.LENGTH_SHORT).show()
             }
