@@ -37,13 +37,14 @@ class DiaryFragment : Fragment() {
         val diarylist = ArrayList<DiaryBean>()
         diarylist.add(DiaryBean("5/15", "aaaa"))
 
-        binding.fabAddnewdiary.setOnClickListener { view ->
+        /*懸浮的加號按鈕
+            binding.fabAddnewdiary.setOnClickListener { view ->
             val intent = Intent()
 
             intent.setClass(requireContext(), AddNewDiaryActivity::class.java)
 
             startActivity(intent)
-        }
+        }*/
 
         listView = binding.lvDiary
 

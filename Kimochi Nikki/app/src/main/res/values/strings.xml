@@ -24,7 +24,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="menu_home">首頁</string>
-    <string name="menu_diary">日記</string>
+    <string name="menu_diary">顯示日記</string>
     <string name="menu_inputemo">輸入日記+心情</string>
     <string name="simle">開心</string>
     <string name="sad">難過</string>

@@ -72,10 +72,10 @@ class SettingFragment : Fragment() {
                     user_name  = document.getString("name")?:""
                     user_email = document.getString("email")?:""
                     user_key = document.getString("key")?:""
-                    _binding?.nowUserid!!.setText(email)
-                    _binding?.nowPassword!!.setText(user_password)
-                    _binding?.nowUsername!!.setText(user_name)
-                    _binding?.nowUserkey!!.setText(user_key)
+                    binding.nowUserid.setText(email)
+                    //binding.nowPassword.setText(user_password)
+                    binding.nowUsername.setText(user_name)
+                    binding.nowUserkey.setText(user_key)
                     //Log.e("url",img_url.toString())
                     if(user_img_url==null)
                     {
@@ -90,7 +90,7 @@ class SettingFragment : Fragment() {
                               val imageURL = uri.toString()
                               // 在這裡使用 imageURL，例如顯示圖片或進行其他操作
                             Log.e("temp ", imageURL)
-                            now_img= _binding?.nowImg!!
+                            now_img= binding.nowImg
                               //用url顯示圖片
                               Glide.with(this)
                                   .load(imageURL)
@@ -144,7 +144,7 @@ class SettingFragment : Fragment() {
 
         btn_changeuserkey = binding.btnChangeuserkey
         btn_changeuserkey.setOnClickListener {
-            changeuserkey("aaa")
+            changeuserkey()
         }
 
         return root
@@ -177,9 +177,7 @@ class SettingFragment : Fragment() {
         builder.setPositiveButton("确定") { dialog, which ->
             val userInput = input2.text.toString()
             if (input1.text.toString() == user_password) {
-                binding.nowPassword.text = userInput
-
-
+                user_password=userInput
     //更新密碼 芷柔
                 docRef
                     .update("password", userInput)
@@ -214,6 +212,10 @@ class SettingFragment : Fragment() {
         builder.setPositiveButton("确定") { dialog, which ->
             val userInput = input.text.toString()
             binding.nowUsername.text = userInput
+            docRef
+                .update("name", userInput)
+                .addOnSuccessListener { Log.d("update name", "DocumentSnapshot successfully updated!") }
+                .addOnFailureListener { e -> Log.w("update name", "Error updating document", e) }
         }
 
         // 添加取消按钮
@@ -226,7 +228,7 @@ class SettingFragment : Fragment() {
         dialog.show()
     }
 
-    private fun changeuserkey(key: String) {
+    private fun changeuserkey() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("欲修改日記鎖")
 
@@ -252,8 +254,13 @@ class SettingFragment : Fragment() {
         // 添加确定按钮
         builder.setPositiveButton("确定") { dialog, which ->
             val userInput = input2.text.toString()
-            if (input1.text.toString() == key) {
+            if (input1.text.toString() == user_key) {
+                user_key=userInput
                 binding.nowUserkey.text = userInput
+                docRef
+                    .update("key", userInput)
+                    .addOnSuccessListener { Log.d("update key", "DocumentSnapshot successfully updated!") }
+                    .addOnFailureListener { e -> Log.w("update key", "Error updating document", e) }
             }else {
                 Toast.makeText(requireContext(), "舊密碼錯誤! 請重試一次", Toast.LENGTH_SHORT).show()
             }

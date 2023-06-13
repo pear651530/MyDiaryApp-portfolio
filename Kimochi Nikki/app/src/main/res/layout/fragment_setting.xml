@@ -118,7 +118,7 @@
                     android:shadowDx="2"
                     android:shadowDy="2"
                     android:shadowRadius="3"
-                    android:text="test"
+                    android:text="******"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
