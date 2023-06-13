@@ -25,7 +25,7 @@
     <string name="action_settings">Settings</string>
     <string name="menu_home">首頁</string>
     <string name="menu_diary">日記</string>
-    <string name="menu_inputemo">輸入心情</string>
+    <string name="menu_inputemo">輸入日記+心情</string>
     <string name="simle">開心</string>
     <string name="sad">難過</string>
     <string name="angry">生氣</string>
@@ -114,6 +114,14 @@
     <string name="suggestions_heart9">給予自己足夠的時間和空間，去探索和實現內心的心動。</string>
     <string name="suggestions_heart10">擁抱生命的變化和轉折，相信每一次心動都會帶領你更接近真正的幸福和成就。</string>
     <string name="menu_touch">教學</string>
+    <string name="menu_touch1">這是個抒發心情的APP</string>
+    <string name="menu_touch2">1. 首頁的月曆會顯示當天心情的趨勢</string>
+    <string name="menu_touch3">2. 在月曆點擊當天的區域可以顯示心情詳細資訊</string>
+    <string name="menu_touch4">3. 日記頁可以看以天為單位的日記顯示</string>
+    <string name="menu_touch5">4. 查看日記須要使用密碼鎖</string>
+    <string name="menu_touch6">5. 輸入日記心情頁可以在那天加入訊息，會是累計的形式</string>
+    <string name="menu_touch7">6. 假如今天特別生氣，請按爆輸入日記心情頁的生氣臉!</string>
+    <string name="menu_touch8">7. 個人設置頁可以修該個人資訊，但信箱無法修改~</string>
     <string name="menu_setting">個人設置</string>
     <string name="change">修改</string>
     <string name="title_activity_trytry">trytry</string>

@@ -58,10 +58,11 @@ class SettingFragment : Fragment() {
         val db = Firebase.firestore
         //read
         val docRef = db.collection("users").document(uid.toString())
+
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                   val  password = document.getString("password")
+                    val password = document.getString("password")
                     val img_url: String? = document.getString("img_url")
                     val name: String? = document.getString("name")
                     val email: String? = document.getString("email")
@@ -88,6 +89,7 @@ class SettingFragment : Fragment() {
                               //用url顯示圖片
                               Glide.with(this)
                                   .load(imageURL)
+                                  .apply(RequestOptions.circleCropTransform())
                                   .into(now_img)
 
                           }.addOnFailureListener { exception ->
@@ -130,7 +132,7 @@ class SettingFragment : Fragment() {
 
         btn_changepassword = binding.btnChangepassword
         btn_changepassword.setOnClickListener {
-            changepassword()
+            changepassword("aaa")
         }
 
         btn_changeusername = binding.btnChangeusername
@@ -140,39 +142,42 @@ class SettingFragment : Fragment() {
 
         btn_changeuserkey = binding.btnChangeuserkey
         btn_changeuserkey.setOnClickListener {
-            changeuserkey()
+            changeuserkey("aaa")
         }
 
         return root
     }
 
-    private fun changepassword() {
+    private fun changepassword(password: String) {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("欲修改的密碼")
+        builder.setTitle("欲修改密碼")
 
-        // 创建第一个 EditText 作为第一个输入字段
+        val layoutAlert = LinearLayout(requireContext())
+        layoutAlert.orientation = LinearLayout.VERTICAL
+
+        val textView1 = TextView(requireContext())
+        textView1.text = "請輸入舊密碼"
+        layoutAlert.addView(textView1)
         val input1 = EditText(requireContext())
         builder.setView(input1)
+        layoutAlert.addView(input1)
 
-        // 创建第二个 EditText 作为第二个输入字段
+        val textView2 = TextView(requireContext())
+        textView2.text = "請輸入新密碼"
+        layoutAlert.addView(textView2)
         val input2 = EditText(requireContext())
         builder.setView(input2)
+        layoutAlert.addView(input2)
 
-        // 将两个输入字段添加到对话框中
-        val layout = LinearLayout(requireContext())
-        layout.orientation = LinearLayout.VERTICAL
-        layout.addView(input1)
-        layout.addView(input2)
-        builder.setView(layout)
+        builder.setView(layoutAlert)
 
         // 添加确定按钮
         builder.setPositiveButton("确定") { dialog, which ->
-            val userInput = input1.text.toString()
-            if (input1.text.toString() == input2.text.toString()) {
+            val userInput = input2.text.toString()
+            if (input1.text.toString() == password) {
                 binding.nowPassword.text = userInput
-
             }else {
-                Toast.makeText(requireContext(), "兩次輸入不一致! 請重試一次", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "舊密碼錯誤! 請重試一次", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -210,31 +215,36 @@ class SettingFragment : Fragment() {
         dialog.show()
     }
 
-    private fun changeuserkey() {
+    private fun changeuserkey(key: String) {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("欲修改的日記鎖")
+        builder.setTitle("欲修改日記鎖")
 
-        // 创建第一个 EditText 作为第一个输入字段
+        val layoutAlert = LinearLayout(requireContext())
+        layoutAlert.orientation = LinearLayout.VERTICAL
+
+        val textView1 = TextView(requireContext())
+        textView1.text = "請輸入舊日記鎖"
+        layoutAlert.addView(textView1)
         val input1 = EditText(requireContext())
         builder.setView(input1)
+        layoutAlert.addView(input1)
 
-        // 创建第二个 EditText 作为第二个输入字段
+        val textView2 = TextView(requireContext())
+        textView2.text = "請輸入新日記鎖"
+        layoutAlert.addView(textView2)
         val input2 = EditText(requireContext())
         builder.setView(input2)
+        layoutAlert.addView(input2)
 
-        // 将两个输入字段添加到对话框中
-        val layout = LinearLayout(requireContext())
-        layout.orientation = LinearLayout.VERTICAL
-        layout.addView(input1)
-        layout.addView(input2)
-        builder.setView(layout)
+        builder.setView(layoutAlert)
 
         // 添加确定按钮
         builder.setPositiveButton("确定") { dialog, which ->
-            val userInput = input1.text.toString()
-            if (input1.text.toString() == input2.text.toString()) binding.nowUserkey.text = userInput
-            else {
-                Toast.makeText(requireContext(), "兩次輸入不一致! 請重試一次", Toast.LENGTH_SHORT).show()
+            val userInput = input2.text.toString()
+            if (input1.text.toString() == key) {
+                binding.nowUserkey.text = userInput
+            }else {
+                Toast.makeText(requireContext(), "舊密碼錯誤! 請重試一次", Toast.LENGTH_SHORT).show()
             }
         }
 
