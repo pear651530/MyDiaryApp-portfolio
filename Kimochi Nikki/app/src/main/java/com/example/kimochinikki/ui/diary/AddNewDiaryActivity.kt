@@ -20,13 +20,17 @@ import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.IOException
 import com.example.kimochinikki.R
+import android.widget.DatePicker
 
 class AddNewDiaryActivity : AppCompatActivity() {
+
+    // 在你的程式碼中宣告一個 DatePicker
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addnewdiary)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //返回鍵啟用
     }
 
