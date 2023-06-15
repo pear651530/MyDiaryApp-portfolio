@@ -157,6 +157,19 @@ class HomeFragment : Fragment() {
         com.example.kimochinikki.R.string.suggestions_heart9,
         com.example.kimochinikki.R.string.suggestions_heart10
     )
+
+    val SuggestionsConfuseId = intArrayOf(
+        com.example.kimochinikki.R.string.suggestions_confuse1,
+        com.example.kimochinikki.R.string.suggestions_confuse2,
+        com.example.kimochinikki.R.string.suggestions_confuse3,
+        com.example.kimochinikki.R.string.suggestions_confuse4,
+        com.example.kimochinikki.R.string.suggestions_confuse5,
+        com.example.kimochinikki.R.string.suggestions_confuse6,
+        com.example.kimochinikki.R.string.suggestions_confuse7,
+        com.example.kimochinikki.R.string.suggestions_confuse8,
+        com.example.kimochinikki.R.string.suggestions_confuse9,
+        com.example.kimochinikki.R.string.suggestions_confuse10
+    )
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -234,12 +247,76 @@ class HomeFragment : Fragment() {
         //rong
         val adapter = DayAdapter(dataList,all_emo_array, requireContext())
         adapter.setOnDateItemClickListener(object : DayAdapter.OnDateItemClickListener { //改文字!!!
-            override fun onDateItemClick(date: DayBean) {
-                binding.textviewAverage.text=date.day.toString()
-                var randomValue = Random.nextInt(10)
-                binding.textviewQuotations.text=getString(QuotationsSimleId[randomValue])
-                randomValue = Random.nextInt(10)
-                binding.textviewSuggestions.text=getString(SuggestionsSimleId[randomValue])
+            override fun onDateItemClick(date: DayBean, item: HashMap<String, String>) {
+                //Log.e("item", item["content"])
+                if(item["content"]=="nothing"){
+                    binding.textviewPushDate.text=date.year.toString()+"-"+date.month.toString()+"-"+date.day.toString()
+                    binding.ImageViewMax.setImageResource(0)
+                    binding.textviewQuotations.text=""
+                    binding.textviewSuggestions.text=""
+                }
+                else{
+                    binding.textviewPushDate.text=date.year.toString()+"-"+date.month.toString()+"-"+date.day.toString()
+                    val mx_emo = Integer.max(
+                        Integer.max(
+                            Integer.parseInt(item?.get("smile")),
+                            Integer.parseInt(item?.get("angry"))
+                        ),
+                        Integer.max(
+                            Integer.parseInt(item?.get("sad")),
+                            Integer.parseInt(item?.get("heart"))
+                        )
+                    )
+                    var cnt = 0
+                    var mx_idx = 0
+                    if(mx_emo==Integer.parseInt(item?.get("smile"))){
+                        cnt++
+                        mx_idx = 0
+                    }
+                    if(mx_emo==Integer.parseInt(item?.get("angry"))){
+                        cnt++
+                        mx_idx = 1
+                    }
+                    if(mx_emo==Integer.parseInt(item?.get("sad"))){
+                        cnt++
+                        mx_idx = 2
+                    }
+                    if(mx_emo==Integer.parseInt(item?.get("heart"))){
+                        cnt++
+                        mx_idx = 3
+                    }
+                    var randomValue = Random.nextInt(10)
+                    if(cnt>1) {
+                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.confusion)
+                        //<a href="https://www.flaticon.com/free-icons/emojis" title="emojis icons">Emojis icons created by zafdesign - Flaticon</a>
+                        binding.textviewQuotations.text="沒有特別的心情趨勢歐~"
+                        binding.textviewSuggestions.text=getString(SuggestionsConfuseId[randomValue])
+                    }
+                    else if(mx_idx==0) {
+                        binding.textviewQuotations.text=getString(QuotationsSimleId[randomValue])
+                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.smiling)
+                        randomValue = Random.nextInt(10)
+                        binding.textviewSuggestions.text=getString(SuggestionsSimleId[randomValue])
+                    }
+                    else if(mx_idx==1) {
+                        binding.textviewQuotations.text=getString(QuotationsAngryId[randomValue])
+                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.angry)
+                        randomValue = Random.nextInt(10)
+                        binding.textviewSuggestions.text=getString(SuggestionsAngryId[randomValue])
+                    }
+                    else if(mx_idx==2) {
+                        binding.textviewQuotations.text=getString(QuotationsSadId[randomValue])
+                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.sad)
+                        randomValue = Random.nextInt(10)
+                        binding.textviewSuggestions.text=getString(SuggestionsSadId[randomValue])
+                    }
+                    else if(mx_idx==3) {
+                        binding.textviewQuotations.text=getString(QuotationsHeartId[randomValue])
+                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.heart)
+                        randomValue = Random.nextInt(10)
+                        binding.textviewSuggestions.text=getString(SuggestionsHeartId[randomValue])
+                    }
+                }
             }
         })
         gv.adapter = adapter

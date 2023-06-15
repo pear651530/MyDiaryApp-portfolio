@@ -30,6 +30,7 @@
     <string name="sad">難過</string>
     <string name="angry">生氣</string>
     <string name="heart">心動</string>
+    <string name="push_date">日期:</string>
     <string name="average">平均:</string>
     <string name="quotations">語錄:</string>
     <string name="quotations_simle1">快樂是內心的陽光，照亮你的生活。</string>
@@ -113,6 +114,16 @@
     <string name="suggestions_heart8">為自己設定挑戰，超越自己的舒適區，拓展心動的領域。</string>
     <string name="suggestions_heart9">給予自己足夠的時間和空間，去探索和實現內心的心動。</string>
     <string name="suggestions_heart10">擁抱生命的變化和轉折，相信每一次心動都會帶領你更接近真正的幸福和成就。</string>
+    <string name="suggestions_confuse1">每一次的努力都不會白費，因為它們都在積累成為您成功的基石。</string>
+    <string name="suggestions_confuse2">無論前方有多大的困難，只要保持信念，您就能找到剋服困難的方法。</string>
+    <string name="suggestions_confuse3">做好當下的事情，而不是糾結於過去或擔憂未來，這樣才能真正活在當下。</string>
+    <string name="suggestions_confuse4">人生沒有捷徑可走，只有堅持不懈的努力，才能獲得真正的成就。</string>
+    <string name="suggestions_confuse5">每一次失敗都是一次寶貴的學習機會，不要畏懼失敗，而是勇敢地從中汲取經驗。</string>
+    <string name="suggestions_confuse6">積極的心態可以改變您的生活，相信自己，您就能創造奇跡。</string>
+    <string name="suggestions_confuse7">每一天都是一個新的開始，不要被昨天的困擾所束縛，抓住今天的機會。</string>
+    <string name="suggestions_confuse8">感恩是一種美德，珍惜身邊的人和事物，您將發現生活更加美好。</string>
+    <string name="suggestions_confuse9">成功不是一蹴而就的，它是通過持續不斷的努力和堅持才能實現的。</string>
+    <string name="suggestions_confuse10">無論您身處何種境遇，都不要放棄希望，因為希望是引領您走向光明的力量。</string>
     <string name="menu_touch">教學</string>
     <string name="menu_touch1">這是個抒發心情的APP</string>
     <string name="menu_touch2">1. 首頁的月曆會顯示當天心情的趨勢</string>

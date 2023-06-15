@@ -144,12 +144,15 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
 
 
         itemlayout.setOnClickListener {
-            onDateItemClickListener?.onDateItemClick(bean)
+            //Log.e("aaaaaaaaa", all_emo_array.toString())
+            if(bean.currentMonth) {
+                onDateItemClickListener?.onDateItemClick(bean, all_emo_array[bean.day - 1])
+            }
         }
         return itemlayout
     }
 
     interface OnDateItemClickListener {
-        fun onDateItemClick(date: DayBean)
+        fun onDateItemClick(date: DayBean, date_diary: HashMap<String, String>)
     }
 }

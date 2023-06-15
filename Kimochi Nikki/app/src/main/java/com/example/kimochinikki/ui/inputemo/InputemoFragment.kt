@@ -61,8 +61,6 @@ class InputemoFragment : Fragment() {
             add_new_diary()
         }
 
-
-        culavg()
         return root
     }
     private fun add_new_diary(){
@@ -141,12 +139,8 @@ Log.e("why",now_diary.toString())
             .addOnFailureListener { exception ->
                 Log.d("total failed", "get failed with ", exception)
             }
-
-
-
 //芷柔
-
-
+        init()
     }
 
     fun init() {
@@ -154,6 +148,7 @@ Log.e("why",now_diary.toString())
         binding.TextViewSadtime.text = "0"
         binding.TextViewAngrytime.text = "0"
         binding.TextViewHearttime.text = "0"
+        binding.edittextDiary.text = null
     }
 
     fun addtime(whice: String) {
@@ -174,19 +169,6 @@ Log.e("why",now_diary.toString())
             num++
             binding.TextViewHearttime.text = num.toString()
         }
-    }
-
-    public fun culavg() {
-        max(
-            max(
-                Integer.parseInt(binding.TextViewSimletime.text.toString()),
-                Integer.parseInt(binding.TextViewSadtime.text.toString())
-            ),
-            max(
-                Integer.parseInt(binding.TextViewAngrytime.text.toString()),
-                Integer.parseInt(binding.TextViewHearttime.text.toString())
-            )
-        )
     }
 
     override fun onDestroyView() {

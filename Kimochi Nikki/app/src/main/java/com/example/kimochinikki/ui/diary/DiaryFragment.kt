@@ -1,5 +1,6 @@
 package com.example.kimochinikki.ui.diary
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
@@ -7,12 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.kimochinikki.databinding.FragmentDiaryBinding
 import android.widget.ListView
-import com.example.kimochinikki.adapter.DayAdapter
+import android.widget.ScrollView
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import com.example.kimochinikki.adapter.DiaryArrayAdapter
-import com.example.kimochinikki.bean.DayBean
+import com.example.kimochinikki.databinding.FragmentDiaryBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -21,16 +22,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import kotlin.random.Random
-import android.content.Intent
-import android.widget.Button
-import android.widget.TextView
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
-import android.view.Window
+
 class DiaryFragment : Fragment() {
     private lateinit var listView: ListView
     private var _binding: FragmentDiaryBinding? = null
@@ -171,16 +165,21 @@ class DiaryFragment : Fragment() {
         //獲取當前Activity的根視圖
         var rootView = binding.jumpDiary
         binding.shareBtn.setOnClickListener {
-            var bm: Bitmap =getScreenShot(root)//將當前畫面轉成bitmap型態
+            var bm: Bitmap =getScreenShot(rootView)//將當前畫面轉成bitmap型態
             do_share(bm)
         }
         return root
     }
 
-    fun getScreenShot(view: View): Bitmap {
-        val screenView = view.rootView
-        //將螢幕快取到的圖片存成Bitmap
-        val bitmap = Bitmap.createBitmap(screenView.width, screenView.height, Bitmap.Config.ARGB_8888)
+    fun getScreenShot( screenView: ScrollView): Bitmap {
+        //val screenView = view.rootView
+        var height = 0
+        // 正确获取 ScrollView 的高度
+        for (i in 0 until screenView.childCount) {
+            height += screenView.getChildAt(i).height
+        }
+        // 将屏幕截图保存为 Bitmap
+        val bitmap = Bitmap.createBitmap(screenView.width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         screenView.draw(canvas)
         return bitmap
