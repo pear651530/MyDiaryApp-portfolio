@@ -47,7 +47,7 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
         0 to R.drawable.smiling,
         1 to R.drawable.angry,
         2 to R.drawable.sad,
-        2 to R.drawable.heart,
+        3 to R.drawable.heart,
     )
 
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
@@ -99,7 +99,7 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
             if(all_emo_array.isNotEmpty())
             {
                 val item=getItem_emo(cnt) as HashMap<String, String>
-                //  Log.e("maybe?",cnt.toString()+" "+item.toString())
+                  Log.e("maybe?",cnt.toString()+" "+item.toString())
                 cnt+=1
                 if(item?.get("content")=="have"){
                     val mx_emo = Integer.max(
@@ -134,6 +134,9 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
                     else emo_resourceMap[mx_idx]?.let { resourceId ->
                         imageView.setImageResource(resourceId)
                     }
+                }
+                else{
+                    imageView.setImageResource(0)
                 }
             }
             if(cnt==all_emo_array.size)
