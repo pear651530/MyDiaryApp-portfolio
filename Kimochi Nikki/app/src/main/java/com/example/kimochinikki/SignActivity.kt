@@ -174,6 +174,7 @@ class SignActivity : AppCompatActivity() {
                 var  getimgpath:String? = null
                 if (choose_img==1)
                     getimgpath=UploadImage(wait_sign_btn)
+                Log.e("why??",choose_img.toString()+"  "+getimgpath)
                 // Create a new user with a first and last name
                 val user = hashMapOf(
                     "email" to email.toString(),

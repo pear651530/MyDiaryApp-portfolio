@@ -109,13 +109,11 @@ class HomeActivity : AppCompatActivity() {
 
                     TextView_email.setText(user_email)
 
-                    if(user_img_url==null)
-                    {
-                        Log.e("url","is ull")
-                    }else
+
+                    if(user_img_url!="")
                     {
 //get user image
-                        Log.e("url",user_img_url)
+                       Log.e("!!url",user_img_url)
                         val storage = Firebase.storage
                         val storageRef = storage.reference.child(user_img_url.toString())
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -133,6 +131,12 @@ class HomeActivity : AppCompatActivity() {
                             // 發生錯誤時的處理
                         }
 //////////////////////
+                    }else{
+                        now_img= findViewById(R.id.imageView)
+                        Glide.with(this)
+                            .load(R.drawable.head_preimg)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(now_img)
                     }
 
                     Log.d("db message", "DocumentSnapshot data: ${document.data}")
