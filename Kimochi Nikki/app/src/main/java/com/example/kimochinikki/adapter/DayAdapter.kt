@@ -41,6 +41,15 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
         onDateItemClickListener = listener
     }
     var cnt=0
+    val array = arrayOf("smiling", "angry","sad","heart","confusion")
+
+    val emo_resourceMap = hashMapOf(
+        0 to R.drawable.smiling,
+        1 to R.drawable.angry,
+        2 to R.drawable.sad,
+        2 to R.drawable.heart,
+    )
+
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         val inflater = LayoutInflater.from(context)
         var itemlayout: LinearLayout? = null
@@ -68,7 +77,7 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
         textView.gravity = Gravity.CENTER
         textView.setTextColor(Color.BLACK)
         textView.setTypeface(Typeface.DEFAULT_BOLD)
-       // Log.e("bean",bean.toString())
+        // Log.e("bean",bean.toString())
         //Log.e("all_emo_array",all_emo_array.toString())
 
         if (bean.currentDay) {
@@ -90,7 +99,7 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
             if(all_emo_array.isNotEmpty())
             {
                 val item=getItem_emo(cnt) as HashMap<String, String>
-                Log.e("maybe?",cnt.toString()+" "+item.toString())
+                //  Log.e("maybe?",cnt.toString()+" "+item.toString())
                 cnt+=1
                 if(item?.get("content")=="have"){
                     val mx_emo = Integer.max(
@@ -103,29 +112,28 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
                             Integer.parseInt(item?.get("heart"))
                         )
                     )
-                    var cnt = 0
-                    var mx_idx = 0
+                    var cnt_ = 0
+                    var mx_idx: Int = 0
                     if(mx_emo==Integer.parseInt(item?.get("smile"))){
-                        cnt++
+                        cnt_++
                         mx_idx = 0
                     }
                     if(mx_emo==Integer.parseInt(item?.get("angry"))){
-                        cnt++
+                        cnt_++
                         mx_idx = 1
                     }
                     if(mx_emo==Integer.parseInt(item?.get("sad"))){
-                        cnt++
+                        cnt_++
                         mx_idx = 2
                     }
                     if(mx_emo==Integer.parseInt(item?.get("heart"))){
-                        cnt++
+                        cnt_++
                         mx_idx = 3
                     }
-                    if(cnt>1) Glide.with(context).load(R.drawable.confusion).into(imageView) //<a href="https://www.flaticon.com/free-icons/emojis" title="emojis icons">Emojis icons created by zafdesign - Flaticon</a>
-                    else if(mx_idx==0) Glide.with(context).load(R.drawable.smiling).into(imageView)
-                    else if(mx_idx==1) Glide.with(context).load(R.drawable.angry).into(imageView)
-                    else if(mx_idx==2) Glide.with(context).load(R.drawable.sad).into(imageView)
-                    else if(mx_idx==3) Glide.with(context).load(R.drawable.heart).into(imageView)
+                    if(cnt_>1) Glide.with(context).load(R.drawable.confusion).into(imageView) //<a href="https://www.flaticon.com/free-icons/emojis" title="emojis icons">Emojis icons created by zafdesign - Flaticon</a>
+                    else emo_resourceMap[mx_idx]?.let { resourceId ->
+                        imageView.setImageResource(resourceId)
+                    }
                 }
             }
             if(cnt==all_emo_array.size)
