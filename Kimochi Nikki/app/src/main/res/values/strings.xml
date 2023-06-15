@@ -3,6 +3,14 @@
     <string name="login">登入</string>
     <string name="logout">登出</string>
     <string name="sign">註冊</string>
+    <string name="sign_hint">還沒有帳號?請註冊!</string>
+    <string name="login_err1">信箱格式不合</string>
+    <string name="login_err2">請輸入密碼</string>
+    <string name="login_err3">登入成功</string>
+    <string name="login_err4">登入失敗</string>
+    <string name="login_err5">請稍後</string>
+    <string name="login_err6">創建用戶中...</string>
+    <string name="login_err7">登入中...</string>
     <string name="userid">信箱</string>
     <string name="userpassword">密碼</string>
     <string name="username">名稱</string>

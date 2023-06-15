@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.MenuItem
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -54,6 +55,7 @@ class SignActivity : AppCompatActivity() {
     private lateinit var sign_password: EditText
     private lateinit var edittext_username: EditText
     private lateinit var edittext_userkey: EditText
+    private lateinit var  actionBar: ActionBar
 
     ///firebase
     val db = Firebase.firestore
@@ -63,11 +65,16 @@ class SignActivity : AppCompatActivity() {
      //   binding=ActivitySignBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_sign)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //返回鍵啟用
-
+        actionBar=supportActionBar!!
+        actionBar.title=getString(R.string.sign)
         select_img=findViewById(R.id.select_img)
         btn_sign=findViewById(R.id.btn_sign)
         select_btn=findViewById(R.id.select_btn)
 
+        sign_userid = findViewById<EditText>(R.id.sign_userid)
+        sign_password = findViewById<EditText>(R.id.sign_password)
+        edittext_username = findViewById<EditText>(R.id.edittext_username)
+        edittext_userkey = findViewById<EditText>(R.id.edittext_userkey)
        // actionBar=supportActionBar!!D
      //   actionBar.title="Sign Up"
         //enable actionbar ,enable back button
@@ -76,8 +83,8 @@ class SignActivity : AppCompatActivity() {
 
         //configure progress dialog
         progressDialog= ProgressDialog(this)
-        progressDialog.setTitle("Please wait")
-        progressDialog.setMessage("Create account In...")
+        progressDialog.setTitle(getString(R.string.login_err5))
+        progressDialog.setMessage(getString(R.string.login_err6))
         progressDialog.setCanceledOnTouchOutside(false)
         //init firebase auth
         firebaseAuth=FirebaseAuth.getInstance()
@@ -116,18 +123,14 @@ class SignActivity : AppCompatActivity() {
            validdateData()
 
         }
+
     }
     private fun validdateData(){
         //get data
     //Log.e("      ewwew","eqwe      ")
-        sign_userid = findViewById<EditText>(R.id.sign_userid)
-        sign_password = findViewById<EditText>(R.id.sign_password)
         email=sign_userid.text.toString().trim()
         password=sign_password.text.toString().trim()
-
-        edittext_username = findViewById<EditText>(R.id.edittext_username)
        var user_name=edittext_username.text.toString().trim()
-        edittext_userkey = findViewById<EditText>(R.id.edittext_userkey)
        var user_key=edittext_userkey.text.toString().trim()
 
         Log.e("1111111 ",email)

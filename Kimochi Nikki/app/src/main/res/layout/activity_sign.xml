@@ -67,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:ems="10"
+                android:textColor="@color/gray_dark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -98,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
+                android:textColor="@color/gray_dark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -129,6 +131,7 @@
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                 android:ems="10"
                 android:inputType="textFilter"
+                android:textColor="@color/gray_dark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -160,6 +163,7 @@
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                 android:ems="10"
                 android:inputType="textFilter"
+                android:textColor="@color/gray_dark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>

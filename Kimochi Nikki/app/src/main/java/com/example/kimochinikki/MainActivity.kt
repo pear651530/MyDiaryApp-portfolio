@@ -44,11 +44,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 //configure actionbar
          actionBar=supportActionBar!!
-         actionBar.title="login"
+         actionBar.title=getString(R.string.app_name)
 //configure progress dialog
         progressDialog= ProgressDialog(this)
-        progressDialog.setTitle("Please wait")
-        progressDialog.setMessage("Logging In...")
+        progressDialog.setTitle(getString(R.string.login_err5))
+        progressDialog.setMessage(getString(R.string.login_err7))
         progressDialog.setCanceledOnTouchOutside(false)
 //init firebaseAuth
         val gif_book = findViewById<ImageView>(R.id.gif_book)
@@ -123,10 +123,10 @@ class MainActivity : AppCompatActivity() {
          if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
          {
              //invaild email format
-             edittext_userid.error="Invalid email format"
+             edittext_userid.error=getString((R.string.login_err1))
          }else if(TextUtils.isEmpty(password))
          {
-             edittextuser_password.error="Please enter password"
+             edittextuser_password.error=getString((R.string.login_err2))
          }else {
             firebase_login()
          }
@@ -140,12 +140,12 @@ class MainActivity : AppCompatActivity() {
                  Log.e("nowsss err",firebaseUser.toString())
                  val email=firebaseUser!!.email
                  val uid=firebaseUser!!.uid
-                 Toast.makeText(this,"LoggedIn as $uid",Toast.LENGTH_SHORT).show()
+                 Toast.makeText(this,getString(R.string.login_err3),Toast.LENGTH_SHORT).show()
                  startActivity(Intent(this,HomeActivity::class.java))
                  finish()
              }.addOnFailureListener{e->
                  progressDialog.dismiss()
-                 Toast.makeText(this,"logi failed due to ${e.message}",Toast.LENGTH_SHORT).show()
+                 Toast.makeText(this,getString(R.string.login_err4),Toast.LENGTH_SHORT).show()
              }
      }
 

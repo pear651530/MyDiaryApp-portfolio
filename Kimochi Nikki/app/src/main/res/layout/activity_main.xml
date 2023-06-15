@@ -49,6 +49,7 @@
                 android:ems="10"
                 android:hint="email"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/gray_dark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -81,6 +82,7 @@
                 android:hint="password"
                 android:ems="10"
                 android:inputType="textPassword"
+                android:textColor="@color/gray_dark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -113,7 +115,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Not have account? sign Up"
+            android:textColor="@color/gray_dark"
+            android:text="@string/sign_hint"
             android:padding="5dp"
             />
     </LinearLayout>
