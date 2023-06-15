@@ -218,18 +218,7 @@ class HomeFragment : Fragment() {
 
         //val textView = findViewById<TextView>(R.id.rong_try)
         ///R.id.imageView.setImageResource(R.drawable.image);
-
-        val user = Firebase.auth.currentUser
-        user?.let {
-            // Name, email address, and profile photo Url
-            val email = it.email
-            val photoUrl = it.photoUrl
-
-            val emailVerified = it.isEmailVerified
-
-            val uid = it.uid
-
-        }
+        
         //binding.rongTry.setText()
 
         return root
@@ -252,15 +241,13 @@ class HomeFragment : Fragment() {
         adapter.setOnDateItemClickListener(object : DayAdapter.OnDateItemClickListener { //改文字!!!
             override fun onDateItemClick(date: DayBean, item: HashMap<String, String>) {
                 Log.e("item", item.toString())
+                binding.textviewPushDate.text=date.year.toString()+"-"+date.month.toString()+"-"+date.day.toString()
                 if(item["content"]=="nothing"){
-                    binding.textviewPushDate.text=date.year.toString()+"-"+date.month.toString()+"-"+date.day.toString()
                     binding.ImageViewMax.setImageResource(0)
                     binding.textviewQuotations.text=""
                     binding.textviewSuggestions.text=""
                 }
                 else{
-                    binding.textviewPushDate.text=date.year.toString()+"-"+date.month.toString()+"-"+date.day.toString()
-
                     var randomValue = Random.nextInt(10)
                     val max_emo=item?.get("max_emo")
                     emo_resourceMap[max_emo]?.let { resourceId ->
@@ -330,8 +317,8 @@ class HomeFragment : Fragment() {
         }
         calendar.add(Calendar.MONTH, 1)
         val currentDays = getMonth(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR))
-        val rong_use_year= (calendar.get(Calendar.YEAR)).toString()
-        val rong_use_month= (calendar.get(Calendar.MONTH) + 1).toString()
+        val rong_use_year= (calendar.get(Calendar.YEAR))
+        val rong_use_month= (calendar.get(Calendar.MONTH) + 1)
         Log.e("QQQQQQ",currentDays.toString())
         Log.e("QQQQQQ year", (calendar.get(Calendar.YEAR)).toString())
         //rong get list from firebase
@@ -344,11 +331,7 @@ class HomeFragment : Fragment() {
                 val documentList = mutableListOf<DocumentSnapshot>()
 
                 for (i in 1..currentDays) {
-                    var target="ss"
-                    if (i<10)
-                         target=rong_use_year+"-"+rong_use_month+"-0"+i.toString()
-                    else
-                         target=rong_use_year+"-"+rong_use_month+"-"+i.toString()
+                    val target = String.format("%04d-%02d-%02d", rong_use_year, rong_use_month , i)
                     val document = db.collection("users").document(uid)
                         .collection("user_diary").document(target).get().await()
                     if(document.exists())
@@ -407,6 +390,7 @@ class HomeFragment : Fragment() {
         Log.e("QAQ",all_emo_array.toString())
        // adapter.notifyDataSetChanged()
         calendar.add(Calendar.MONTH, -1)
+ /////////////////////////////////////
     }
 
     suspend fun readFirebaseData(target_doc:String): DocumentSnapshot {

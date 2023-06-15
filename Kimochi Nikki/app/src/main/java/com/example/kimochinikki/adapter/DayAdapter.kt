@@ -63,14 +63,6 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
         val bean = getItem(position) as DayBean
         //
 
-        /*if(all_emo_array.isNotEmpty()&&bean.currentMonth){
-        val date_try=getItem_emo(position) as HashMap<String, String>
-        Log.e("maybe?",date_try.toString())
-            Log.e("cnt",cnt.toString())
-            cnt+=1
-        //
-
-        }*/
 
 
         val textView: TextView = itemlayout?.findViewById(R.id.dayTextView)!!
@@ -96,9 +88,12 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
         val imageView: ImageView = itemlayout?.findViewById(R.id.iconImageView)!!
         //Glide.with(context).load(R.drawable.ic_menu_home).into(imageView)
 
-        /*if (bean.currentMonth) {
-           // var item=getItem_emo(bean.day-1)
-            var item=getItem_emo(2)
+        if (bean.currentMonth&&all_emo_array.isNotEmpty()) {
+            Log.e("err??",all_emo_array.toString())
+           var item=getItem_emo(bean.day-1)
+            Log.e("item err??",item.toString())
+
+            //var item=getItem_emo(2)
             if(item?.get("content")=="have"){
                 val max_emo=item?.get("max_emo")
                 emo_resourceMap[max_emo]?.let { resourceId ->
@@ -108,7 +103,7 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
             else{
                 imageView.setImageResource(0)
             }
-        }*/
+        }
 
 
         itemlayout.setOnClickListener {
