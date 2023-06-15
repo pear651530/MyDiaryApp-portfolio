@@ -45,7 +45,6 @@ class HomeActivity : AppCompatActivity() {
     val uid=firebaseUser!!.uid
     val docRef = db.collection("users").document(uid.toString())
     /////////////
-    val all_diary_array = ArrayList<HashMap<String, String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -16,12 +16,20 @@ import com.example.kimochinikki.bean.DayBean
 import android.widget.GridView
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
+import kotlin.math.log
 import kotlin.random.Random
 class HomeFragment : Fragment() {
 
@@ -36,6 +44,15 @@ class HomeFragment : Fragment() {
     private lateinit var tvNextMonth: TextView
     private lateinit var gv: GridView
     private lateinit var rong_try: TextView
+    val all_diary_array = ArrayList<HashMap<String, String>>()
+
+
+    private lateinit var year: String
+    private lateinit var month: String
+
+    private val db = Firebase.firestore
+    val firebaseUser = Firebase.auth.currentUser
+    val uid=firebaseUser!!.uid
 
     val QuotationsSimleId = intArrayOf(
         com.example.kimochinikki.R.string.quotations_simle1,
@@ -185,7 +202,6 @@ class HomeFragment : Fragment() {
         val user = Firebase.auth.currentUser
         user?.let {
             // Name, email address, and profile photo Url
-            val name = it.displayName
             val email = it.email
             val photoUrl = it.photoUrl
 
@@ -200,7 +216,6 @@ class HomeFragment : Fragment() {
         }
         //binding.rongTry.setText()
 
-
         return root
     }
 
@@ -210,22 +225,14 @@ class HomeFragment : Fragment() {
         tvNextMonth = binding.tvNextMonth
         gv = binding.gv
         initAdapter()
-        getfirebase()
-    }
-    private fun getfirebase(){
-        //Log.e("can see?",(tvCurrentDate.text).toString())
-        val str=(tvCurrentDate.text).toString()
-        val pattern = "(\\d{4})年(\\d{2})月".toRegex()
-        val matchResult = pattern.find(str)
-        val year = matchResult?.groupValues?.get(1) // 2023
-        val month = matchResult?.groupValues?.get(2) // 06
-        Log.e("can see?",year.toString())
-        Log.e("can see?",month.toString())
-
     }
     private fun initAdapter() {
         val dataList = ArrayList<DayBean>()
-        val adapter = DayAdapter(dataList, requireContext())
+        val all_emo_array = ArrayList<HashMap<String, String>>()
+        all_emo_array.add(hashMapOf(
+            "ini" to "???",))
+        //rong
+        val adapter = DayAdapter(dataList,all_emo_array, requireContext())
         adapter.setOnDateItemClickListener(object : DayAdapter.OnDateItemClickListener { //改文字!!!
             override fun onDateItemClick(date: DayBean) {
                 binding.textviewAverage.text=date.day.toString()
@@ -238,19 +245,22 @@ class HomeFragment : Fragment() {
         gv.adapter = adapter
         val calendar = Calendar.getInstance()
         setCurrentData(calendar)
-        updateAdapter(calendar, dataList, adapter)
+      //  Log.e("initAdapter QQQQQQ",calendar.toString())
+        updateAdapter(calendar, dataList,all_emo_array, adapter)
         tvPreMonth.setOnClickListener {
             calendar.add(Calendar.MONTH, -1)
-            updateAdapter(calendar, dataList, adapter)
+            updateAdapter(calendar, dataList,all_emo_array, adapter)
+          //  GetDataFromFirebse()
         }
         tvNextMonth.setOnClickListener {
             calendar.add(Calendar.MONTH, 1)
-            updateAdapter(calendar, dataList, adapter)
+            updateAdapter(calendar, dataList,all_emo_array, adapter)
         }
     }
 
-    private fun updateAdapter(calendar: Calendar, dataList: ArrayList<DayBean>, adapter: DayAdapter) {
+    private fun updateAdapter(calendar: Calendar, dataList: ArrayList<DayBean>, all_emo_array :ArrayList<HashMap<String, String>>,adapter: DayAdapter) {
         dataList.clear()
+        all_emo_array.clear()
         setCurrentData(calendar)
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         val weekIndex = calendar.get(Calendar.DAY_OF_WEEK) - 1
@@ -267,6 +277,63 @@ class HomeFragment : Fragment() {
         }
         calendar.add(Calendar.MONTH, 1)
         val currentDays = getMonth(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR))
+        val rong_use_year= (calendar.get(Calendar.YEAR)).toString()
+        val rong_use_month= (calendar.get(Calendar.MONTH) + 1).toString()
+        Log.e("QQQQQQ",currentDays.toString())
+        Log.e("QQQQQQ year", (calendar.get(Calendar.YEAR)).toString())
+        //rong get list from firebase
+////////////////// rong
+        //val all_emo_array = ArrayList<HashMap<String, String>>()
+
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+              //  val documentNames = listOf("document1", "document2", "document3")
+                val documentList = mutableListOf<DocumentSnapshot>()
+
+                for (i in 1..currentDays) {
+                    var target="ss"
+                    if (i<10)
+                         target=rong_use_year+"-"+rong_use_month+"-0"+i.toString()
+                    else
+                         target=rong_use_year+"-"+rong_use_month+"-"+i.toString()
+                    val document = db.collection("users").document(uid)
+                        .collection("user_diary").document(target).get().await()
+                    if(document.exists())
+                    {
+                        var dataBase_simle=document.getString("smile")
+                        var dataBase_sadtime=document.getString("sad")
+                        var dataBase_angry=document.getString("angry")
+                        var dataBase_heart=document.getString("heart")
+                        val now_emo = hashMapOf(
+                            "content" to "have",
+                            "smile" to dataBase_simle.orEmpty(),
+                            "sad" to dataBase_sadtime.orEmpty(),
+                            "angry" to dataBase_angry.orEmpty(),
+                            "heart" to dataBase_heart.orEmpty(),
+                        )
+                        Log.e("exist ",document.toString())
+                        all_emo_array.add(now_emo)
+                    }else
+                    {
+                        all_emo_array.add( hashMapOf("content" to "nothing"))
+                    }
+
+                }
+
+              Log.e("wwww",all_emo_array.toString())
+                //   listView = binding.lvDiary
+                adapter.notifyDataSetChanged()
+
+                //    listView.adapter = DiaryArrayAdapter(requireContext(), all_diary_array)
+            } catch (e: Exception) {
+                Log.e("err", "eqwewr" )
+
+                // 處理例外狀況
+            }
+        }
+
+        //all_diary_array.add(hashMapOf("emtion" to "null"))
+//////////////////
         for (i in 0 until currentDays) {
             val bean = DayBean()
             bean.year = calendar.get(Calendar.YEAR)
@@ -289,8 +356,15 @@ class HomeFragment : Fragment() {
             bean.currentMonth = false
             dataList.add(bean)
         }
-        adapter.notifyDataSetChanged()
+        Log.e("QAQ",all_emo_array.toString())
+       // adapter.notifyDataSetChanged()
         calendar.add(Calendar.MONTH, -1)
+    }
+
+    suspend fun readFirebaseData(target_doc:String): DocumentSnapshot {
+        val querySnapshot = db.collection("users").document(uid)
+            .collection("user_diary").document(target_doc).get().await()
+        return querySnapshot
     }
 
     private fun setCurrentData(calendar: Calendar) {

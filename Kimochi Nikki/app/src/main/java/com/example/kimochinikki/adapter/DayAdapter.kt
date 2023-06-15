@@ -15,7 +15,10 @@ import com.bumptech.glide.Glide
 import com.example.kimochinikki.R
 import com.example.kimochinikki.bean.DayBean
 import android.util.Log
-class DayAdapter(val list: List<DayBean>, val context: Context) : BaseAdapter() {
+import java.util.ArrayList
+import java.util.HashMap
+
+class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<String, String>>, val context: Context) : BaseAdapter() {
     override fun getCount(): Int {
         return list.size
     }
@@ -46,11 +49,12 @@ class DayAdapter(val list: List<DayBean>, val context: Context) : BaseAdapter() 
         val bean = getItem(position) as DayBean
 
         val textView: TextView = itemlayout?.findViewById(R.id.dayTextView)!!
-
         textView.text = bean.day.toString()
         textView.gravity = Gravity.CENTER
         textView.setTextColor(Color.BLACK)
         textView.setTypeface(Typeface.DEFAULT_BOLD)
+       // Log.e("bean",bean.toString())
+        //Log.e("all_emo_array",all_emo_array.toString())
 
         if (bean.currentDay) {
             textView.setBackgroundColor(Color.parseColor("#fd5f00"))
