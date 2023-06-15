@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +47,7 @@ class HomeFragment : Fragment() {
     private lateinit var tvNextMonth: TextView
     private lateinit var gv: GridView
     private lateinit var rong_try: TextView
-    val all_diary_array = ArrayList<HashMap<String, String>>()
+    val temp_all_diary_array = ArrayList<HashMap<String, String>>()
 
     val emo_resourceMap = hashMapOf(
         "smiling" to com.example.kimochinikki.R.drawable.smiling,
@@ -331,29 +332,50 @@ class HomeFragment : Fragment() {
         GlobalScope.launch(Dispatchers.Main) {
             try {
               //  val documentNames = listOf("document1", "document2", "document3")
-                val documentList = mutableListOf<DocumentSnapshot>()
                 binding.jumpLoad.visibility = View.VISIBLE
                 binding.jumpLoad.setOnClickListener{}// 点击事件被拦截，不执行任何操作
-                for (i in 1..currentDays) {
-                    val target = String.format("%04d-%02d-%02d", rong_use_year, rong_use_month , i)
-                    val document = db.collection("users").document(uid)
-                        .collection("user_diary").document(target).get().await()
-                    if(document.exists())
-                    {
 
-                        var max_emo=document.getString("max_emo")
-                        val now_emo = hashMapOf(
-                            "content" to "have",
-                            "max_emo" to max_emo.orEmpty(),
-                        )
-                        Log.e("exist ",document.toString())
-                        all_emo_array.add(now_emo)
-                    }else
-                    {
-                        all_emo_array.add( hashMapOf("content" to "nothing"))
+                val prefix = String.format("%04d-%02d-", rong_use_year, rong_use_month)
+                var indx=0
+                // val prefix = "abc" // 欲查詢的字串前綴
+                val collectionRef = FirebaseFirestore.getInstance().collection("users").
+                document(uid).collection("user_diary")
+
+                val querySnapshot = collectionRef
+                    .whereGreaterThanOrEqualTo("date", prefix)
+                    .whereLessThan("date", prefix + "\uf8ff").get().await()
+                val documentList: List<DocumentSnapshot> = querySnapshot.documents
+
+                for (documentSnapshot in documentList) {
+                    val data: Map<String, Any>? = documentSnapshot.data
+
+                    val max_emo: String? = data?.get("max_emo") as? String
+                    val date: String? = data?.get("date") as? String
+
+                    val parts = date?.split("-") // 使用 "-" 進行切割
+                    val day = parts?.getOrNull(2)
+                    Log.e("want ay",day.toString())
+
+                    val now_emo = hashMapOf(
+                        "content" to "have",
+                        "max_emo" to max_emo.orEmpty(),
+                    )
+                    val num_day=day!!.toInt()-1
+                    while(indx<num_day) {
+                        all_emo_array.add(hashMapOf("content" to "nothing"))
+                        indx+=1
                     }
+                    all_emo_array.add(now_emo)
+                    indx+=1
 
                 }
+                while(indx<currentDays) {
+                    all_emo_array.add(hashMapOf("content" to "nothing"))
+                    indx+=1
+                }
+                Log.e("temp_all_diary_array",all_emo_array.toString())
+                Log.e("temp_all_diary_array_size",all_emo_array.size.toString())
+
                 binding.jumpLoad.visibility = View.GONE
               Log.e("wwww",all_emo_array.toString())
                 //   listView = binding.lvDiary
