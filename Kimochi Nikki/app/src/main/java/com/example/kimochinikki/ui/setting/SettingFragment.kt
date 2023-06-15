@@ -5,6 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputFilter
+import android.text.InputType
+import android.text.method.DigitsKeyListener
+import android.text.method.NumberKeyListener
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -83,7 +87,7 @@ class SettingFragment : Fragment() {
                     binding.nowUserid.setText(email)
                     //binding.nowPassword.setText(user_password)
                     binding.nowUsername.setText(user_name)
-                    binding.nowUserkey.setText(user_key)
+                    //binding.nowUserkey.setText(user_key)
                     //Log.e("url",img_url.toString())
                     if(user_img_url=="")
                     {
@@ -174,6 +178,7 @@ class SettingFragment : Fragment() {
         return root
     }
     private fun changepassword() {
+        val allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=_+[]{}|;':\",./<>?"
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("欲修改密碼")
 
@@ -184,14 +189,24 @@ class SettingFragment : Fragment() {
         textView1.text = "請輸入舊密碼"
         layoutAlert.addView(textView1)
         val input1 = EditText(requireContext())
-        builder.setView(input1)
+        val keyListener = object : NumberKeyListener() {
+            override fun getInputType(): Int {
+                return InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            }
+            override fun getAcceptedChars(): CharArray {
+                return allowedChars.toCharArray()
+            }
+        }
+        input1.keyListener = keyListener
+        //builder.setView(input1)
         layoutAlert.addView(input1)
 
         val textView2 = TextView(requireContext())
         textView2.text = "請輸入新密碼"
         layoutAlert.addView(textView2)
         val input2 = EditText(requireContext())
-        builder.setView(input2)
+        input2.keyListener = keyListener
+        //builder.setView(input2)
         layoutAlert.addView(input2)
 
         builder.setView(layoutAlert)
@@ -207,7 +222,7 @@ class SettingFragment : Fragment() {
                     .addOnSuccessListener { Log.d("update password", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("update password", "Error updating document", e) } 
      //////////////////////////
-
+                Toast.makeText(requireContext(), "修改成功!", Toast.LENGTH_SHORT).show()
             }else {
                 Toast.makeText(requireContext(), "舊密碼錯誤! 請重試一次", Toast.LENGTH_SHORT).show()
             }
@@ -240,6 +255,7 @@ class SettingFragment : Fragment() {
                 .update("name", userInput)
                 .addOnSuccessListener { Log.d("update name", "DocumentSnapshot successfully updated!") }
                 .addOnFailureListener { e -> Log.w("update name", "Error updating document", e) }
+            Toast.makeText(requireContext(), "修改成功!", Toast.LENGTH_SHORT).show()
             //left bar 儣播改名字
             val intent = Intent("com.example.MY_CUSTOM_ACTION")
             intent.putExtra("message", userInput)
@@ -259,6 +275,7 @@ class SettingFragment : Fragment() {
     }
 
     private fun changeuserkey() {
+        val allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=_+[]{}|;':\",./<>?"
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("欲修改日記鎖")
 
@@ -269,14 +286,24 @@ class SettingFragment : Fragment() {
         textView1.text = "請輸入舊日記鎖"
         layoutAlert.addView(textView1)
         val input1 = EditText(requireContext())
-        builder.setView(input1)
+        val keyListener = object : NumberKeyListener() {
+            override fun getInputType(): Int {
+                return InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            }
+            override fun getAcceptedChars(): CharArray {
+                return allowedChars.toCharArray()
+            }
+        }
+        input1.keyListener = keyListener
+        //builder.setView(input1)
         layoutAlert.addView(input1)
 
         val textView2 = TextView(requireContext())
         textView2.text = "請輸入新日記鎖"
         layoutAlert.addView(textView2)
         val input2 = EditText(requireContext())
-        builder.setView(input2)
+        input2.keyListener = keyListener
+        //builder.setView(input2)
         layoutAlert.addView(input2)
 
         builder.setView(layoutAlert)
@@ -286,11 +313,12 @@ class SettingFragment : Fragment() {
             val userInput = input2.text.toString()
             if (input1.text.toString() == user_key) {
                 user_key=userInput
-                binding.nowUserkey.text = userInput
+                //binding.nowUserkey.text = userInput
                 docRef
                     .update("key", userInput)
                     .addOnSuccessListener { Log.d("update key", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("update key", "Error updating document", e) }
+                Toast.makeText(requireContext(), "修改成功!", Toast.LENGTH_SHORT).show()
             }else {
                 Toast.makeText(requireContext(), "舊密碼錯誤! 請重試一次", Toast.LENGTH_SHORT).show()
             }

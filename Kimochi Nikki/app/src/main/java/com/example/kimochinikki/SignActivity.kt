@@ -191,12 +191,12 @@ class SignActivity : AppCompatActivity() {
                     .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 ////////////////////////////
 
-                Toast.makeText(this,"Account create with $email",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"註冊成功",Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this,HomeActivity::class.java))
             }
             .addOnFailureListener {e->
                 progressDialog.dismiss()
-                Toast.makeText(this,"ssign failed due to ${e.message}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"註冊失敗",Toast.LENGTH_SHORT).show()
             }
 
     }

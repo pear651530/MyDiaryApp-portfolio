@@ -48,10 +48,14 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="email"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&amp;*()-=_+[]{}|;':&quot;,./&lt;&gt;?"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/gray_dark"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:scrollHorizontally="true"/>
 
         </LinearLayout>
 
@@ -82,9 +86,13 @@
                 android:hint="password"
                 android:ems="10"
                 android:inputType="textPassword"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&amp;*()-=_+[]{}|;':&quot;,./&lt;&gt;?"
                 android:textColor="@color/gray_dark"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:scrollHorizontally="true"/>
         </LinearLayout>
 
         <LinearLayout

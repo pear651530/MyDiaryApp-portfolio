@@ -65,12 +65,15 @@
                 android:id="@+id/sign_userid"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&amp;*()-=_+[]{}|;':&quot;,./&lt;&gt;?"
                 android:ems="10"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/gray_dark"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
+                android:scrollHorizontally="true"/>
 
         </LinearLayout>
 
@@ -103,7 +106,10 @@
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&amp;*()-=_+[]{}|;':&quot;,./&lt;&gt;?"
                 android:textColor="@color/gray_dark"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
+                android:scrollHorizontally="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -134,7 +140,10 @@
                 android:inputType="textFilter"
                 android:textColor="@color/gray_dark"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
+                android:scrollHorizontally="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -166,7 +175,10 @@
                 android:inputType="textFilter"
                 android:textColor="@color/gray_dark"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
+                android:scrollHorizontally="true"/>
         </LinearLayout>
 
         <Button
