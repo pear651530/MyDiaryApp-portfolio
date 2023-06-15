@@ -26,6 +26,9 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
     override fun getItem(position: Int): Any {
         return list[position]
     }
+    fun getItem_emo(position: Int): HashMap<String, String> {
+        return all_emo_array[position]
+    }
 
     override fun getItemId(position: Int): Long {
         return 0
@@ -37,6 +40,7 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
     fun setOnDateItemClickListener(listener: OnDateItemClickListener) {
         onDateItemClickListener = listener
     }
+    var cnt=0
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         val inflater = LayoutInflater.from(context)
         var itemlayout: LinearLayout? = null
@@ -47,6 +51,17 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
             itemlayout = view as? LinearLayout
         }
         val bean = getItem(position) as DayBean
+        //
+
+        /*if(all_emo_array.isNotEmpty()&&bean.currentMonth){
+        val date_try=getItem_emo(position) as HashMap<String, String>
+        Log.e("maybe?",date_try.toString())
+            Log.e("cnt",cnt.toString())
+            cnt+=1
+        //
+
+        }*/
+
 
         val textView: TextView = itemlayout?.findViewById(R.id.dayTextView)!!
         textView.text = bean.day.toString()
@@ -69,7 +84,56 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
         }
 
         val imageView: ImageView = itemlayout?.findViewById(R.id.iconImageView)!!
-        Glide.with(context).load(R.drawable.ic_menu_home).into(imageView)
+        //Glide.with(context).load(R.drawable.ic_menu_home).into(imageView)
+
+        if (bean.currentMonth) {
+            if(all_emo_array.isNotEmpty())
+            {
+                val item=getItem_emo(cnt) as HashMap<String, String>
+                Log.e("maybe?",cnt.toString()+" "+item.toString())
+                cnt+=1
+                if(item?.get("content")=="have"){
+                    val mx_emo = Integer.max(
+                        Integer.max(
+                            Integer.parseInt(item?.get("smile")),
+                            Integer.parseInt(item?.get("angry"))
+                        ),
+                        Integer.max(
+                            Integer.parseInt(item?.get("sad")),
+                            Integer.parseInt(item?.get("heart"))
+                        )
+                    )
+                    var cnt = 0
+                    var mx_idx = 0
+                    if(mx_emo==Integer.parseInt(item?.get("smile"))){
+                        cnt++
+                        mx_idx = 0
+                    }
+                    if(mx_emo==Integer.parseInt(item?.get("angry"))){
+                        cnt++
+                        mx_idx = 1
+                    }
+                    if(mx_emo==Integer.parseInt(item?.get("sad"))){
+                        cnt++
+                        mx_idx = 2
+                    }
+                    if(mx_emo==Integer.parseInt(item?.get("heart"))){
+                        cnt++
+                        mx_idx = 3
+                    }
+                    if(cnt>1) Glide.with(context).load(R.drawable.confusion).into(imageView) //<a href="https://www.flaticon.com/free-icons/emojis" title="emojis icons">Emojis icons created by zafdesign - Flaticon</a>
+                    else if(mx_idx==0) Glide.with(context).load(R.drawable.smiling).into(imageView)
+                    else if(mx_idx==1) Glide.with(context).load(R.drawable.angry).into(imageView)
+                    else if(mx_idx==2) Glide.with(context).load(R.drawable.sad).into(imageView)
+                    else if(mx_idx==3) Glide.with(context).load(R.drawable.heart).into(imageView)
+                }
+            }
+            if(cnt==all_emo_array.size)
+            {cnt=0
+                Log.e("maybe  size?",all_emo_array.size.toString())
+            }
+        }
+
 
         itemlayout.setOnClickListener {
             onDateItemClickListener?.onDateItemClick(bean)
