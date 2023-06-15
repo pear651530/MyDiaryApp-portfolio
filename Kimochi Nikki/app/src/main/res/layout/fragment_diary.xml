@@ -27,8 +27,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#C4E1FF"
-            android:layout_marginTop="30dp">
+            android:background="#C4E1FF">
 
             <ImageButton
                 android:id="@+id/delete_btn"
@@ -36,11 +35,25 @@
                 android:layout_height="100px"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="4dp"
+                android:layout_marginRight="12px"
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:src="@drawable/delete_button" />
-<!--<a href="https://www.flaticon.com/free-icons/cancel" title="cancel icons">Cancel icons created by hqrloveq - Flaticon</a>-->
+            <!--<a href="https://www.flaticon.com/free-icons/cancel" title="cancel icons">Cancel icons created by hqrloveq - Flaticon</a>-->
+
+            <ImageButton
+                android:id="@+id/share_btn"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="120px"
+                android:layout_marginRight="12px"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:src="@drawable/share" />
+            <!--<a href="https://www.flaticon.com/free-icons/share" title="share icons">Share icons created by Pixel perfect - Flaticon</a>-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

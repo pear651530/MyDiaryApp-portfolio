@@ -1,5 +1,7 @@
 package com.example.kimochinikki.ui.diary
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,7 +22,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.random.Random
-
+import android.content.Intent
+import android.widget.Button
+import android.widget.TextView
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.FileOutputStream
+import android.view.Window
 class DiaryFragment : Fragment() {
     private lateinit var listView: ListView
     private var _binding: FragmentDiaryBinding? = null
@@ -158,7 +168,47 @@ class DiaryFragment : Fragment() {
         }
         Log.e("outside show list", all_diary_array.toString())
         //
+        //獲取當前Activity的根視圖
+        var rootView = binding.jumpDiary
+        binding.shareBtn.setOnClickListener {
+            var bm: Bitmap =getScreenShot(root)//將當前畫面轉成bitmap型態
+            do_share(bm)
+        }
         return root
+    }
+
+    fun getScreenShot(view: View): Bitmap {
+        val screenView = view.rootView
+        //將螢幕快取到的圖片存成Bitmap
+        val bitmap = Bitmap.createBitmap(screenView.width, screenView.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        screenView.draw(canvas)
+        return bitmap
+    }
+    fun do_share(bm: Bitmap) {
+        try {
+            // 儲存圖片到暫存檔案中
+            val cachePath = File(requireContext().cacheDir, "images")
+            cachePath.mkdirs()
+            val stream = FileOutputStream("$cachePath/image.png")
+            //將 Bitmap 壓縮為 PNG 格式的圖片並寫入到 image.png 檔案中
+            bm.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.close()
+            // 取得暫存檔案的Uri
+            val imagePath = File(requireContext().cacheDir, "images")
+            val newFile = File(imagePath, "image.png")
+            val contentUri = FileProvider.getUriForFile(requireContext(), "com.example.kimochinikki.fileprovider", newFile)
+            // 使用分享Intent分享圖片
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "image/png"
+            //使用 putExtra() 把要分享的資料加到Intent中
+            shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
+            //startActivity() 執行Intent，同時create 一個 chooser來顯示"選擇清單"讓使用者選擇要用什麼軟體
+            startActivity(Intent.createChooser(shareIntent, "分享圖片"))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("wawa", e.toString());
+        }
     }
 
     suspend fun readFirebaseData(): List<DocumentSnapshot> {
