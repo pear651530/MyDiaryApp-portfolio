@@ -49,6 +49,7 @@ class DiaryArrayAdapter(val c: Context, val items: ArrayList<HashMap<String, Str
 
         val diary_iconImageView: ImageView = itemlayout?.findViewById(R.id.diary_iconImageView)!!
         val max_emo=(item?.get("max_emo")).toString()
+        Log.e("emo", max_emo)
 // val emo_array = arrayOf("smiling", "angry","sad","heart","confusion")
         // diary_iconImageView.setImageResource(emo_resourceMap.get("max_emo"))
 

@@ -33,7 +33,7 @@ class InputemoFragment : Fragment() {
     val firebaseUser = Firebase.auth.currentUser
    // val email=firebaseUser!!.email
     val uid=firebaseUser!!.uid
-    val emo_array = arrayOf("smiling", "angry","sad","heart","confusion")
+    val emo_array = arrayOf("smiling","sad", "angry","heart","confusion")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -181,8 +181,8 @@ class InputemoFragment : Fragment() {
                         cnt_++
                         mx_idx = 3
                     }
-                    if(cnt_>1)mx_idx=4
-
+                    if(cnt_>1){mx_idx=4}
+                    Log.e("12emo_err",mx_idx.toString())
                     val now_diary = hashMapOf(
                         "date" to dateString,
                         "smile" to num_simle ,
