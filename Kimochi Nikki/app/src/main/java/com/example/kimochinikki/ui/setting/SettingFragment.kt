@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.kimochinikki.MainActivity
@@ -27,6 +28,13 @@ import java.io.IOException
 import com.google.firebase.FirebaseApp
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class SettingFragment : Fragment() {
 
@@ -77,7 +85,7 @@ class SettingFragment : Fragment() {
                     binding.nowUsername.setText(user_name)
                     binding.nowUserkey.setText(user_key)
                     //Log.e("url",img_url.toString())
-                    if(user_img_url==null)
+                    if(user_img_url=="")
                     {
                         Log.e("url","is ull")
                     }else
@@ -129,7 +137,23 @@ class SettingFragment : Fragment() {
 
         btn_changeimg = binding.btnChangeimg
         btn_changeimg.setOnClickListener {
-            openGallery()
+
+            GlobalScope.launch(Dispatchers.Main) {
+                val openGalleryDeferred = async { openGallery() }
+                openGalleryDeferred.await()
+
+                var  getimgpath:String? = null
+                Log.e("choose_img",choose_img.toString())
+
+                if (choose_img==1) {
+                    getimgpath = UploadImage(wait_sign_btn)
+                    Log.e("getimgpath",wait_sign_btn.toString())
+                }
+                docRef
+                    .update("img_url", getimgpath)
+                    .addOnSuccessListener { Log.d("update key", "DocumentSnapshot successfully updated!") }
+                    .addOnFailureListener { e -> Log.w("update key", "Error updating document", e) }
+            }
         }
 
         btn_changepassword = binding.btnChangepassword
@@ -149,7 +173,6 @@ class SettingFragment : Fragment() {
 
         return root
     }
-
     private fun changepassword() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("欲修改密碼")
@@ -217,6 +240,12 @@ class SettingFragment : Fragment() {
                 .update("name", userInput)
                 .addOnSuccessListener { Log.d("update name", "DocumentSnapshot successfully updated!") }
                 .addOnFailureListener { e -> Log.w("update name", "Error updating document", e) }
+            //left bar 儣播改名字
+            val intent = Intent("com.example.MY_CUSTOM_ACTION")
+            intent.putExtra("message", userInput)
+            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
+// 或者使用 BroadcastManager.sendBroadcast(intent)
+
         }
 
         // 添加取消按钮
@@ -290,7 +319,42 @@ class SettingFragment : Fragment() {
             .create()
             .show()
     }
+    private fun changeimage(){
+        var  getimgpath:String? = null
+        if (choose_img==1)
+            getimgpath=UploadImage(wait_sign_btn)
+        docRef
+            .update("img_url", getimgpath)
+            .addOnSuccessListener { Log.d("update key", "DocumentSnapshot successfully updated!") }
+            .addOnFailureListener { e -> Log.w("update key", "Error updating document", e) }
 
+
+    }
+    fun UploadImage(uri: Uri?):String {
+        var path="failed"
+        if(uri!=null) {
+            //var pd= ProgressDialog(this)
+            // pd.setTitle("uploadimg")
+            //  pd.show()
+            var succ=0
+            val storageRef = FirebaseStorage.getInstance().reference
+            // Log.d("URI", uri.toString())
+            val formatter= SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
+            val now= Date()
+            val file_name=formatter.format(now)
+            path="images/$file_name"
+            val task = storageRef.child("images/$file_name").putFile(uri)
+            task.addOnSuccessListener {
+
+                Log.d("UploadImage", "Task Is Successful")
+            }.addOnFailureListener {
+                Log.d("UploadImageFail", "Image Upload Failed ${it.printStackTrace()}")
+            }
+            /////////////////
+////////////////////
+        }
+        return path
+    }
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
@@ -298,6 +362,7 @@ class SettingFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.e("runrun", "runrurnun")
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             val selectedImageUri: Uri? = data.data
@@ -333,6 +398,7 @@ class SettingFragment : Fragment() {
                     .load(bitmap)
                     .apply(RequestOptions.circleCropTransform())
                     .into(now_img)
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }

@@ -1,5 +1,7 @@
 package com.example.kimochinikki
 
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -15,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.kimochinikki.databinding.ActivityMain2Binding
@@ -22,8 +25,15 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import com.example.kimochinikki.ui.setting.SettingFragment
+import com.yalantis.ucrop.UCrop
+
 
 class HomeActivity : AppCompatActivity() {
+
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMain2Binding
@@ -45,8 +55,21 @@ class HomeActivity : AppCompatActivity() {
     val uid=firebaseUser!!.uid
     val docRef = db.collection("users").document(uid.toString())
     /////////////
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == "com.example.MY_CUSTOM_ACTION") {
+                val message = intent.getStringExtra("message")
+                // 在這裡處理接收到的訊息
+                Log.d("ParentActivity", "Received message: $message")
+                //val tt=
+                TextView_name.setText(message)
+
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityMain2Binding.inflate(layoutInflater)
@@ -70,21 +93,7 @@ class HomeActivity : AppCompatActivity() {
 
         val user = Firebase.auth.currentUser
         Log.e("now err",user.toString())
-        /*user?.let {
-            // Name, email address, and profile photo Url
-            val name = it.displayName
-            val email = it.email
-            val photoUrl = it.photoUrl
 
-            // Check if user's email is verified
-            val emailVerified = it.isEmailVerified
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            val uid = it.uid
-
-        }*/
 
  /////////////////////
 
@@ -147,6 +156,9 @@ class HomeActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d("db message", "get failed with ", exception)
             }
+        val filter = IntentFilter("com.example.MY_CUSTOM_ACTION")
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, filter)
+        // 或者使用 BroadcastManager.registerReceiver(broadcastReceiver, filter)
 
         /////////////////////
     }
@@ -155,5 +167,11 @@ class HomeActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver)
+        // 或者使用 BroadcastManager.unregisterReceiver(broadcastReceiver)
+    }
+
 
 }
