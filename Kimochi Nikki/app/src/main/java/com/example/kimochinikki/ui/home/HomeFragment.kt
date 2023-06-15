@@ -2,6 +2,7 @@ package com.example.kimochinikki.ui.home
 
 import android.R
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -225,6 +227,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initView() {
+        Glide.with(this).load(com.example.kimochinikki.R.drawable.load_cln).into(binding.jumpLoadGif)
         tvCurrentDate = binding.tvCurrentDate
         tvPreMonth = binding.tvPreMonth
         tvNextMonth = binding.tvNextMonth
@@ -254,7 +257,7 @@ class HomeFragment : Fragment() {
                         binding.ImageViewMax.setImageResource(resourceId)
                     }
 
-                    if(max_emo== "confous") {
+                    if(max_emo== "confusion") {
                         //<a href="https://www.flaticon.com/free-icons/emojis" title="emojis icons">Emojis icons created by zafdesign - Flaticon</a>
                         binding.textviewQuotations.text="沒有特別的心情趨勢歐~"
                         binding.textviewSuggestions.text=getString(SuggestionsConfuseId[randomValue])
@@ -329,7 +332,8 @@ class HomeFragment : Fragment() {
             try {
               //  val documentNames = listOf("document1", "document2", "document3")
                 val documentList = mutableListOf<DocumentSnapshot>()
-
+                binding.jumpLoad.visibility = View.VISIBLE
+                binding.jumpLoad.setOnClickListener{}// 点击事件被拦截，不执行任何操作
                 for (i in 1..currentDays) {
                     val target = String.format("%04d-%02d-%02d", rong_use_year, rong_use_month , i)
                     val document = db.collection("users").document(uid)
@@ -350,7 +354,7 @@ class HomeFragment : Fragment() {
                     }
 
                 }
-
+                binding.jumpLoad.visibility = View.GONE
               Log.e("wwww",all_emo_array.toString())
                 //   listView = binding.lvDiary
                 adapter.notifyDataSetChanged()
@@ -391,6 +395,11 @@ class HomeFragment : Fragment() {
        // adapter.notifyDataSetChanged()
         calendar.add(Calendar.MONTH, -1)
  /////////////////////////////////////
+        //val handler = Handler()
+        //handler.postDelayed({
+            //binding.jumpLoadGif.visibility = View.GONE
+        //}, 7000L)
+
     }
 
     suspend fun readFirebaseData(target_doc:String): DocumentSnapshot {
