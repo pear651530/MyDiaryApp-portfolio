@@ -146,7 +146,7 @@ class SettingFragment : Fragment() {
                 val openGalleryDeferred = async { openGallery() }
                 openGalleryDeferred.await()
 
-                var  getimgpath:String? = null
+                /*var  getimgpath:String? = null
                 Log.e("choose_img",choose_img.toString())
 
                 if (choose_img==1) {
@@ -157,7 +157,7 @@ class SettingFragment : Fragment() {
                     .update("img_url", getimgpath)
                     .addOnSuccessListener { Log.d("update key", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("update key", "Error updating document", e) }
-            }
+           */ }
         }
 
         btn_changepassword = binding.btnChangepassword
@@ -361,6 +361,7 @@ class SettingFragment : Fragment() {
     fun UploadImage(uri: Uri?):String {
         var path="failed"
         if(uri!=null) {
+
             //var pd= ProgressDialog(this)
             // pd.setTitle("uploadimg")
             //  pd.show()
@@ -373,12 +374,16 @@ class SettingFragment : Fragment() {
             path="images/$file_name"
             val task = storageRef.child("images/$file_name").putFile(uri)
             task.addOnSuccessListener {
+                val intent = Intent("com.example.MY_image_ACTION")
+                intent.putExtra("message", path)
+                LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
 
                 Log.d("UploadImage", "Task Is Successful")
             }.addOnFailureListener {
                 Log.d("UploadImageFail", "Image Upload Failed ${it.printStackTrace()}")
             }
-            /////////////////
+
+          /////////////////
 ////////////////////
         }
         return path
@@ -396,9 +401,21 @@ class SettingFragment : Fragment() {
             val selectedImageUri: Uri? = data.data
             selectedImageUri?.let { uri ->
                 cropImage(uri)
-                Log.e("pic", uri.toString())
+                Log.e("setting_pic", uri.toString())
                 choose_img = 1
                 wait_sign_btn = uri
+                var  getimgpath:String? = null
+                Log.e("choose_img",choose_img.toString())
+
+                if (choose_img==1) {
+                    getimgpath = UploadImage(wait_sign_btn)
+                    Log.e("getimgpath",wait_sign_btn.toString())
+                }
+                docRef
+                    .update("img_url", getimgpath)
+                    .addOnSuccessListener { Log.d("update key", "DocumentSnapshot successfully updated!") }
+                    .addOnFailureListener { e -> Log.w("update key", "Error updating document", e) }
+
             }
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == AppCompatActivity.RESULT_OK) {
             val croppedImageUri = UCrop.getOutput(data!!)

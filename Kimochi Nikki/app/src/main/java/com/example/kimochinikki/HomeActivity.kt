@@ -65,6 +65,31 @@ class HomeActivity : AppCompatActivity() {
                 TextView_name.setText(message)
 
             }
+            if (intent?.action == "com.example.MY_image_ACTION") {
+                val message = intent.getStringExtra("message")
+                // 在這裡處理接收到的訊息
+                Log.d("MY_image_ACTION", "Received message: $message")
+                //val tt=
+                now_img= findViewById(R.id.imageView)
+                //用url顯示圖片
+                val storage = Firebase.storage
+                val storageRef = storage.reference.child(message.toString())
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    val imageURL = uri.toString()
+                    // 在這裡使用 imageURL，例如顯示圖片或進行其他操作
+                    Log.e("temp ", imageURL)
+                    now_img= findViewById(R.id.imageView)
+                    //用url顯示圖片
+                    Glide.with(context!!.applicationContext)
+                        .load(imageURL)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(now_img)
+
+                }.addOnFailureListener { exception ->
+                    // 發生錯誤時的處理
+                }
+
+            }
         }
     }
 
@@ -156,9 +181,11 @@ class HomeActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d("db message", "get failed with ", exception)
             }
-        val filter = IntentFilter("com.example.MY_CUSTOM_ACTION")
+        val filter = IntentFilter()
+        filter.addAction("com.example.MY_CUSTOM_ACTION")
+        filter.addAction("com.example.MY_image_ACTION")
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, filter)
-        // 或者使用 BroadcastManager.registerReceiver(broadcastReceiver, filter)
+// 或者使用 BroadcastManager.registerReceiver(broadcastReceiver, filter)
 
         /////////////////////
     }

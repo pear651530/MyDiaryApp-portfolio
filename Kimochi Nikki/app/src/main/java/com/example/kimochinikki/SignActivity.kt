@@ -231,6 +231,7 @@ class SignActivity : AppCompatActivity() {
             if(selectedImageUri!=null) {
                 choose_img=1
                 wait_sign_btn=selectedImageUri
+                Log.e("now_pic",selectedImageUri.toString())
             }
 
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
