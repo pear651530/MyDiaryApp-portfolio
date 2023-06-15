@@ -22,7 +22,6 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
     override fun getCount(): Int {
         return list.size
     }
-
     override fun getItem(position: Int): Any {
         return list[position]
     }
@@ -52,6 +51,7 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
     )
 
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
+        Log.e("nono",all_emo_array.toString())
         val inflater = LayoutInflater.from(context)
         var itemlayout: LinearLayout? = null
 

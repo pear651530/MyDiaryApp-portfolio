@@ -218,7 +218,7 @@ class HomeFragment : Fragment() {
 
         //val textView = findViewById<TextView>(R.id.rong_try)
         ///R.id.imageView.setImageResource(R.drawable.image);
-        
+
         //binding.rongTry.setText()
 
         return root
