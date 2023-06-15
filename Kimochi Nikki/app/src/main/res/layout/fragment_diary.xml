@@ -17,6 +17,236 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ScrollView
+        android:id="@+id/jump_diary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C4E1FF"
+        android:visibility="invisible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#C4E1FF"
+            android:layout_marginTop="30dp">
+
+            <ImageButton
+                android:id="@+id/delete_btn"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="4dp"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:src="@drawable/delete_button" />
+<!--<a href="https://www.flaticon.com/free-icons/cancel" title="cancel icons">Cancel icons created by hqrloveq - Flaticon</a>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="160px"
+                            android:layout_height="160px"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/smiling" />
+                        <!--<a href="https://www.flaticon.com/free-icons/emoji" title="emoji icons">Emoji icons created by Pixel perfect - Flaticon</a>-->
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:shadowColor="@color/gray"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="3"
+                            android:text="@string/simle"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/diaryTextView_simletime"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:shadowColor="@color/gray"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="3"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="160px"
+                            android:layout_height="160px"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/sad" />
+                        <!--<a href="https://www.flaticon.com/free-icons/cry" title="cry icons">Cry icons created by justicon - Flaticon</a>-->
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:shadowColor="@color/gray"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="3"
+                            android:text="@string/sad"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/diaryTextView_sadtime"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:shadowColor="@color/gray"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="3"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="160px"
+                            android:layout_height="160px"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/angry" />
+                        <!--<a href="https://www.flaticon.com/free-icons/angry" title="angry icons">Angry icons created by Vectors Market - Flaticon</a>-->
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:shadowColor="@color/gray"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="3"
+                            android:text="@string/angry"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/diaryTextView_angrytime"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:shadowColor="@color/gray"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="3"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="160px"
+                            android:layout_height="160px"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/heart" />
+                        <!--<a href="https://www.flaticon.com/free-icons/emoji" title="emoji icons">Emoji icons created by Vectors Market - Flaticon</a>-->
+
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:shadowColor="@color/gray"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="3"
+                            android:text="@string/heart"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/diaryTextView_hearttime"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:shadowColor="@color/gray"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="3"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/diaryTextView_context"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="top|start"
+                    android:textColor="@color/gray_dark"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
     <!--懸浮的加號按鈕
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_addnewdiary"
