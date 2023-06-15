@@ -2,6 +2,7 @@ package com.example.kimochinikki.ui.home
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -209,8 +210,19 @@ class HomeFragment : Fragment() {
         tvNextMonth = binding.tvNextMonth
         gv = binding.gv
         initAdapter()
+        getfirebase()
     }
+    private fun getfirebase(){
+        //Log.e("can see?",(tvCurrentDate.text).toString())
+        val str=(tvCurrentDate.text).toString()
+        val pattern = "(\\d{4})年(\\d{2})月".toRegex()
+        val matchResult = pattern.find(str)
+        val year = matchResult?.groupValues?.get(1) // 2023
+        val month = matchResult?.groupValues?.get(2) // 06
+        Log.e("can see?",year.toString())
+        Log.e("can see?",month.toString())
 
+    }
     private fun initAdapter() {
         val dataList = ArrayList<DayBean>()
         val adapter = DayAdapter(dataList, requireContext())

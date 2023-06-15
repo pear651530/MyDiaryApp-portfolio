@@ -102,9 +102,9 @@ class InputemoFragment : Fragment() {
                     dataBase_heart+=Integer.parseInt(num_heart)
                     dataBase_content=dataBase_content+"\n"+content
                     val now_diary = hashMapOf(
-                        "date" to dataBase_simle.toString(),
-                        "smile" to dataBase_sadtime.toString() ,
-                        "sad" to dataBase_angry.toString(),
+                        "date" to dateString,
+                        "smile" to dataBase_simle.toString() ,
+                        "sad" to dataBase_sadtime.toString(),
                         "angry" to dataBase_angry.toString(),
                         "heart" to dataBase_heart.toString(),
                         "content" to dataBase_content,

@@ -45,6 +45,7 @@ class HomeActivity : AppCompatActivity() {
     val uid=firebaseUser!!.uid
     val docRef = db.collection("users").document(uid.toString())
     /////////////
+    val all_diary_array = ArrayList<HashMap<String, String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +104,10 @@ class HomeActivity : AppCompatActivity() {
                     TextView_name = navHeaderView.findViewById(R.id.TextView_name)
                     TextView_email = navHeaderView.findViewById(R.id.TextView_email)
                     TextView_name.setText(user_name)
+
+                    //var try_name = GlobalVariable.getName()
+                    //TextView_name.setText(try_name)
+
                     TextView_email.setText(user_email)
 
                     if(user_img_url==null)

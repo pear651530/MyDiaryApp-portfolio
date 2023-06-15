@@ -25,6 +25,10 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class DiaryFragment : Fragment() {
     private lateinit var listView: ListView
@@ -60,16 +64,16 @@ class DiaryFragment : Fragment() {
 
             startActivity(intent)
         }*/
-
-        listView = binding.lvDiary
+//need recover
+      listView = binding.lvDiary
 
         listView.adapter = DiaryArrayAdapter(requireContext(), diarylist)
 
 
         //get data
 
-        db.collection("users").document(uid)
-            .collection("user_diary").get()
+      /*  db.collection("users").document(uid)
+            .collection("user_diary").get()//.await()
             .addOnSuccessListener { querySnapshot ->
                 Log.e("now data,",querySnapshot.toString())
                 val documentList: List<DocumentSnapshot> = querySnapshot.documents
@@ -108,9 +112,53 @@ class DiaryFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Log.d("db message", "get failed with ", exception)
             }
+*/
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val documents = readFirebaseData()
+                // 在這裡處理資料
+                for (document in documents) {
+                    val data = document.data
+                    val date: String? = data?.get("date") as? String
+                    val smile: String? = data?.get("smile") as? String
+                    val sad: String? = data?.get("sad") as? String
+                    val angry: String? = data?.get("angry") as? String
+                    val heart: String? = data?.get("heart") as? String
+                    val content: String? = data?.get("content") as? String
 
+                    all_diary_array.add( hashMapOf(
+                        "date" to date.orEmpty(),
+                        "smile" to smile.orEmpty(),
+                        "sad" to sad.orEmpty(),
+                        "angry" to angry.orEmpty(),
+                        "heart" to heart.orEmpty(),
+                        "content" to content.orEmpty()
+                    )
+                    )
+                    Log.e("show data",data.toString())
+                    Log.e("show list[0]",all_diary_array[0].toString())
+                    Log.e("show list",all_diary_array.toString())
+                    // 處理資料的邏輯
+                }
+                Log.e("ddoutside show list",all_diary_array.toString())
+//芷柔
+             //   listView = binding.lvDiary
+
+            //    listView.adapter = DiaryArrayAdapter(requireContext(), all_diary_array)
+            } catch (e: Exception) {
+                Log.e("err", "eqwewr" )
+
+                // 處理例外狀況
+            }
+        }
+        Log.e("outside show list",all_diary_array.toString())
         //
         return root
+    }
+    suspend fun readFirebaseData(): List<DocumentSnapshot> {
+        val querySnapshot = db.collection("users").document(uid)
+            .collection("user_diary").get().await()
+        return querySnapshot.documents
     }
 
     override fun onDestroyView() {

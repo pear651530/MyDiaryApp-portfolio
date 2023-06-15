@@ -212,6 +212,7 @@ class SettingFragment : Fragment() {
         builder.setPositiveButton("确定") { dialog, which ->
             val userInput = input.text.toString()
             binding.nowUsername.text = userInput
+            GlobalVariable.setName(userInput)
             docRef
                 .update("name", userInput)
                 .addOnSuccessListener { Log.d("update name", "DocumentSnapshot successfully updated!") }
