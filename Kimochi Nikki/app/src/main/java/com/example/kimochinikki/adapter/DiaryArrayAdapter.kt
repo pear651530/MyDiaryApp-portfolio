@@ -18,7 +18,13 @@ class DiaryArrayAdapter(val c: Context, val items: ArrayList<HashMap<String, Str
     ArrayAdapter<HashMap<String, String>>(c, 0, items) {
 
     private var onDiaryItemClickListener: OnDiaryItemClickListener? = null
-
+    val emo_resourceMap = hashMapOf(
+        "smiling" to R.drawable.smiling,
+        "angry" to R.drawable.angry,
+        "sad" to R.drawable.sad,
+        "heart" to R.drawable.heart,
+        "confusion" to R.drawable.confusion,
+    )
     fun setOnDiaryItemClickListener(listener: OnDiaryItemClickListener) {
         onDiaryItemClickListener = listener
     }
@@ -42,39 +48,13 @@ class DiaryArrayAdapter(val c: Context, val items: ArrayList<HashMap<String, Str
         tv_day.text = item?.get("date")
 
         val diary_iconImageView: ImageView = itemlayout?.findViewById(R.id.diary_iconImageView)!!
-        val mx_emo = Integer.max(
-            Integer.max(
-                Integer.parseInt(item?.get("smile")),
-                Integer.parseInt(item?.get("angry"))
-            ),
-            Integer.max(
-                Integer.parseInt(item?.get("sad")),
-                Integer.parseInt(item?.get("heart"))
-            )
-        )
-        var cnt = 0
-        var mx_idx = 0
-        if(mx_emo==Integer.parseInt(item?.get("smile"))){
-            cnt++
-            mx_idx = 0
+        val max_emo=(item?.get("max_emo")).toString()
+// val emo_array = arrayOf("smiling", "angry","sad","heart","confusion")
+        // diary_iconImageView.setImageResource(emo_resourceMap.get("max_emo"))
+
+        emo_resourceMap[max_emo]?.let { resourceId ->
+            diary_iconImageView.setImageResource(resourceId)
         }
-        if(mx_emo==Integer.parseInt(item?.get("angry"))){
-            cnt++
-            mx_idx = 1
-        }
-        if(mx_emo==Integer.parseInt(item?.get("sad"))){
-            cnt++
-            mx_idx = 2
-        }
-        if(mx_emo==Integer.parseInt(item?.get("heart"))){
-            cnt++
-            mx_idx = 3
-        }
-        if(cnt>1) diary_iconImageView.setImageResource(R.drawable.confusion) //<a href="https://www.flaticon.com/free-icons/emojis" title="emojis icons">Emojis icons created by zafdesign - Flaticon</a>
-        else if(mx_idx==0) diary_iconImageView.setImageResource(R.drawable.smiling)
-        else if(mx_idx==1) diary_iconImageView.setImageResource(R.drawable.angry)
-        else if(mx_idx==2) diary_iconImageView.setImageResource(R.drawable.sad)
-        else if(mx_idx==3) diary_iconImageView.setImageResource(R.drawable.heart)
 
         itemlayout.setOnClickListener {
             item?.let { nonNullItem ->

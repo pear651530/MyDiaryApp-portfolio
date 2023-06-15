@@ -50,63 +50,7 @@ class DiaryFragment : Fragment() {
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        /*懸浮的加號按鈕
-            binding.fabAddnewdiary.setOnClickListener { view ->
-            val intent = Intent()
 
-            intent.setClass(requireContext(), AddNewDiaryActivity::class.java)
-
-            startActivity(intent)
-        }*/
-//need recover
-        //listView = binding.lvDiary
-
-        //listView.adapter = DiaryArrayAdapter(requireContext(), diarylist)
-
-
-        //get data
-
-        /*  db.collection("users").document(uid)
-              .collection("user_diary").get()//.await()
-              .addOnSuccessListener { querySnapshot ->
-                  Log.e("now data,",querySnapshot.toString())
-                  val documentList: List<DocumentSnapshot> = querySnapshot.documents
-
-                  for (documentSnapshot in documentList) {
-                      val data: Map<String, Any>? = documentSnapshot.data
-
-                      val date: String? = data?.get("date") as? String
-                      val smile: String? = data?.get("smile") as? String
-                      val sad: String? = data?.get("sad") as? String
-                      val angry: String? = data?.get("angry") as? String
-                      val heart: String? = data?.get("heart") as? String
-                      val content: String? = data?.get("content") as? String
-
-                    all_diary_array.add( hashMapOf(
-                          "date" to date.orEmpty(),
-                          "smile" to smile.orEmpty(),
-                          "sad" to sad.orEmpty(),
-                          "angry" to angry.orEmpty(),
-                          "heart" to heart.orEmpty(),
-                          "content" to content.orEmpty()
-                        )
-                      )
-                      Log.e("show data",data.toString())
-                      Log.e("show list[0]",all_diary_array[0].toString())
-                      Log.e("show list",all_diary_array.toString())
-
-                      // 可以在這裡處理文檔的數據
-                      // 例如，使用 data[key] 獲取具體數據
-                  }
-
-              }.addOnFailureListener { exception ->
-                  Log.e("now data fail,",exception.toString())
-
-              }
-              .addOnFailureListener { exception ->
-                  Log.d("db message", "get failed with ", exception)
-              }
-  */
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val documents = readFirebaseData()
@@ -119,6 +63,7 @@ class DiaryFragment : Fragment() {
                     val angry: String? = data?.get("angry") as? String
                     val heart: String? = data?.get("heart") as? String
                     val content: String? = data?.get("content") as? String
+                    val max_emo: String? = data?.get("max_emo") as? String
 
                     all_diary_array.add(
                         hashMapOf(
@@ -127,7 +72,8 @@ class DiaryFragment : Fragment() {
                             "sad" to sad.orEmpty(),
                             "angry" to angry.orEmpty(),
                             "heart" to heart.orEmpty(),
-                            "content" to content.orEmpty()
+                            "content" to content.orEmpty(),
+                            "max_emo" to max_emo.orEmpty(),
                         )
                     )
                     Log.e("show data", data.toString())

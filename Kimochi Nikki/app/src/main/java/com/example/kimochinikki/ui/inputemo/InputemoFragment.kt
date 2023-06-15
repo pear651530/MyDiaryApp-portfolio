@@ -33,7 +33,7 @@ class InputemoFragment : Fragment() {
     val firebaseUser = Firebase.auth.currentUser
    // val email=firebaseUser!!.email
     val uid=firebaseUser!!.uid
-
+    val emo_array = arrayOf("smiling", "angry","sad","heart","confusion")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,7 +68,7 @@ class InputemoFragment : Fragment() {
         val year = datePicker.year
         val month = datePicker.month
         val day = datePicker.dayOfMonth
-        val dateString = "$year-${month + 1}-$day" // 月份需要加1，因為月份從0開始
+        val dateString = String.format("%04d-%02d-%02d", year, month + 1, day)
 
         var num_simle = binding.TextViewSimletime.text.toString()
 
@@ -98,6 +98,36 @@ class InputemoFragment : Fragment() {
                     dataBase_sadtime+=Integer.parseInt(num_sadtime)
                     dataBase_angry+=Integer.parseInt(num_angry)
                     dataBase_heart+=Integer.parseInt(num_heart)
+                    val mx_emo = max(
+                        max(
+                            dataBase_simle,
+                            dataBase_sadtime
+                        ),
+                        max(
+                            dataBase_angry,
+                            dataBase_heart
+                        )
+                    )
+                    var cnt_ = 0
+                    var mx_idx: Int = 0
+                    if(mx_emo==dataBase_simle){
+                        cnt_++
+                        mx_idx = 0
+                    }
+                    if(mx_emo==dataBase_sadtime){
+                        cnt_++
+                        mx_idx = 1
+                    }
+                    if(mx_emo==dataBase_angry){
+                        cnt_++
+                        mx_idx = 2
+                    }
+                    if(mx_emo==dataBase_heart){
+                        cnt_++
+                        mx_idx = 3
+                    }
+                    if(cnt_>1)mx_idx=4
+
                     dataBase_content=dataBase_content+"\n"+content
                     val now_diary = hashMapOf(
                         "date" to dateString,
@@ -106,6 +136,7 @@ class InputemoFragment : Fragment() {
                         "angry" to dataBase_angry.toString(),
                         "heart" to dataBase_heart.toString(),
                         "content" to dataBase_content,
+                        "max_emo" to emo_array[mx_idx],
                     )
 
                     db.collection("users").document(uid.toString()).collection("user_diary")
@@ -118,6 +149,39 @@ class InputemoFragment : Fragment() {
 
                 } else {
                     Log.e("why","adadsdsadf")
+                    var dataBase_simle=Integer.parseInt(num_simle)
+                    var dataBase_sadtime=Integer.parseInt(num_sadtime)
+                    var dataBase_angry=Integer.parseInt(num_angry)
+                    var dataBase_heart=Integer.parseInt(num_heart)
+                    val mx_emo = max(
+                        max(
+                            dataBase_simle,
+                            dataBase_sadtime
+                        ),
+                        max(
+                            dataBase_angry,
+                            dataBase_heart
+                        )
+                    )
+                    var cnt_ = 0
+                    var mx_idx: Int = 0
+                    if(mx_emo==dataBase_simle){
+                        cnt_++
+                        mx_idx = 0
+                    }
+                    if(mx_emo==dataBase_sadtime){
+                        cnt_++
+                        mx_idx = 1
+                    }
+                    if(mx_emo==dataBase_angry){
+                        cnt_++
+                        mx_idx = 2
+                    }
+                    if(mx_emo==dataBase_heart){
+                        cnt_++
+                        mx_idx = 3
+                    }
+                    if(cnt_>1)mx_idx=4
 
                     val now_diary = hashMapOf(
                         "date" to dateString,
@@ -126,6 +190,7 @@ class InputemoFragment : Fragment() {
                         "angry" to num_angry,
                         "heart" to num_heart,
                         "content" to content,
+                        "max_emo" to emo_array[mx_idx],
                     )
 Log.e("why",now_diary.toString())
                     db.collection("users").document(uid.toString()).collection("user_diary")

@@ -46,6 +46,13 @@ class HomeFragment : Fragment() {
     private lateinit var rong_try: TextView
     val all_diary_array = ArrayList<HashMap<String, String>>()
 
+    val emo_resourceMap = hashMapOf(
+        "smiling" to com.example.kimochinikki.R.drawable.smiling,
+        "angry" to com.example.kimochinikki.R.drawable.angry,
+        "sad" to com.example.kimochinikki.R.drawable.sad,
+        "heart" to com.example.kimochinikki.R.drawable.heart,
+        "confusion" to com.example.kimochinikki.R.drawable.confusion,
+    )
 
     private lateinit var year: String
     private lateinit var month: String
@@ -218,12 +225,8 @@ class HomeFragment : Fragment() {
             val email = it.email
             val photoUrl = it.photoUrl
 
-            // Check if user's email is verified
             val emailVerified = it.isEmailVerified
 
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
             val uid = it.uid
 
         }
@@ -248,7 +251,7 @@ class HomeFragment : Fragment() {
         val adapter = DayAdapter(dataList,all_emo_array, requireContext())
         adapter.setOnDateItemClickListener(object : DayAdapter.OnDateItemClickListener { //改文字!!!
             override fun onDateItemClick(date: DayBean, item: HashMap<String, String>) {
-                //Log.e("item", item["content"])
+                Log.e("item", item.toString())
                 if(item["content"]=="nothing"){
                     binding.textviewPushDate.text=date.year.toString()+"-"+date.month.toString()+"-"+date.day.toString()
                     binding.ImageViewMax.setImageResource(0)
@@ -257,62 +260,35 @@ class HomeFragment : Fragment() {
                 }
                 else{
                     binding.textviewPushDate.text=date.year.toString()+"-"+date.month.toString()+"-"+date.day.toString()
-                    val mx_emo = Integer.max(
-                        Integer.max(
-                            Integer.parseInt(item?.get("smile")),
-                            Integer.parseInt(item?.get("angry"))
-                        ),
-                        Integer.max(
-                            Integer.parseInt(item?.get("sad")),
-                            Integer.parseInt(item?.get("heart"))
-                        )
-                    )
-                    var cnt = 0
-                    var mx_idx = 0
-                    if(mx_emo==Integer.parseInt(item?.get("smile"))){
-                        cnt++
-                        mx_idx = 0
-                    }
-                    if(mx_emo==Integer.parseInt(item?.get("angry"))){
-                        cnt++
-                        mx_idx = 1
-                    }
-                    if(mx_emo==Integer.parseInt(item?.get("sad"))){
-                        cnt++
-                        mx_idx = 2
-                    }
-                    if(mx_emo==Integer.parseInt(item?.get("heart"))){
-                        cnt++
-                        mx_idx = 3
-                    }
+
                     var randomValue = Random.nextInt(10)
-                    if(cnt>1) {
-                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.confusion)
+                    val max_emo=item?.get("max_emo")
+                    emo_resourceMap[max_emo]?.let { resourceId ->
+                        binding.ImageViewMax.setImageResource(resourceId)
+                    }
+
+                    if(max_emo== "confous") {
                         //<a href="https://www.flaticon.com/free-icons/emojis" title="emojis icons">Emojis icons created by zafdesign - Flaticon</a>
                         binding.textviewQuotations.text="沒有特別的心情趨勢歐~"
                         binding.textviewSuggestions.text=getString(SuggestionsConfuseId[randomValue])
                     }
-                    else if(mx_idx==0) {
+                    else if(max_emo== "smiling") {
                         binding.textviewQuotations.text=getString(QuotationsSimleId[randomValue])
-                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.smiling)
                         randomValue = Random.nextInt(10)
                         binding.textviewSuggestions.text=getString(SuggestionsSimleId[randomValue])
                     }
-                    else if(mx_idx==1) {
+                    else if(max_emo== "angry") {
                         binding.textviewQuotations.text=getString(QuotationsAngryId[randomValue])
-                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.angry)
                         randomValue = Random.nextInt(10)
                         binding.textviewSuggestions.text=getString(SuggestionsAngryId[randomValue])
                     }
-                    else if(mx_idx==2) {
+                    else if(max_emo== "sad") {
                         binding.textviewQuotations.text=getString(QuotationsSadId[randomValue])
-                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.sad)
                         randomValue = Random.nextInt(10)
                         binding.textviewSuggestions.text=getString(SuggestionsSadId[randomValue])
                     }
-                    else if(mx_idx==3) {
+                    else if(max_emo== "heart") {
                         binding.textviewQuotations.text=getString(QuotationsHeartId[randomValue])
-                        binding.ImageViewMax.setImageResource(com.example.kimochinikki.R.drawable.heart)
                         randomValue = Random.nextInt(10)
                         binding.textviewSuggestions.text=getString(SuggestionsHeartId[randomValue])
                     }
@@ -377,16 +353,11 @@ class HomeFragment : Fragment() {
                         .collection("user_diary").document(target).get().await()
                     if(document.exists())
                     {
-                        var dataBase_simle=document.getString("smile")
-                        var dataBase_sadtime=document.getString("sad")
-                        var dataBase_angry=document.getString("angry")
-                        var dataBase_heart=document.getString("heart")
+
+                        var max_emo=document.getString("max_emo")
                         val now_emo = hashMapOf(
                             "content" to "have",
-                            "smile" to dataBase_simle.orEmpty(),
-                            "sad" to dataBase_sadtime.orEmpty(),
-                            "angry" to dataBase_angry.orEmpty(),
-                            "heart" to dataBase_heart.orEmpty(),
+                            "max_emo" to max_emo.orEmpty(),
                         )
                         Log.e("exist ",document.toString())
                         all_emo_array.add(now_emo)
