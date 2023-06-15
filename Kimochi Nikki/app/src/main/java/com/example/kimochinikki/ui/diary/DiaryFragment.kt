@@ -1,5 +1,6 @@
 package com.example.kimochinikki.ui.diary
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -8,16 +9,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ListView
 import android.widget.ScrollView
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.kimochinikki.adapter.DiaryArrayAdapter
 import com.example.kimochinikki.databinding.FragmentDiaryBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,6 +48,16 @@ class DiaryFragment : Fragment() {
 
     //  var all_diary_array: Array<HashMap<String, String>> = arrayOf()
     val all_diary_array = ArrayList<HashMap<String, String>>()
+
+    private lateinit var user_password: String
+    private lateinit var user_img_url: String
+    private lateinit var user_name: String
+    private lateinit var user_email: String
+    private lateinit var user_key: String
+
+    /////////////
+    val email = firebaseUser!!.email
+    val docRef = db.collection("users").document(uid.toString())
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,7 +65,26 @@ class DiaryFragment : Fragment() {
     ): View {
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
 
+                    user_password = document.getString("password") ?: ""
+                    user_img_url = document.getString("img_url") ?: ""
+                    user_name = document.getString("name") ?: ""
+                    user_email = document.getString("email") ?: ""
+                    user_key = document.getString("key") ?: ""
+                    //Log.e("url",img_url.toString())
+//////////////////////
+
+                    Log.d("db message", "DocumentSnapshot data: ${document.data}")
+                } else {
+                    Log.d("db message", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("db message", "get failed with ", exception)
+            }
 
         GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -87,17 +122,42 @@ class DiaryFragment : Fragment() {
 
                 listView.adapter = DiaryArrayAdapter(requireContext(), all_diary_array)
                 val diaryAdapter = listView.adapter as? DiaryArrayAdapter
-                diaryAdapter?.setOnDiaryItemClickListener(object : DiaryArrayAdapter.OnDiaryItemClickListener {
+                diaryAdapter?.setOnDiaryItemClickListener(object :
+                    DiaryArrayAdapter.OnDiaryItemClickListener {
                     override fun onDiaryItemClick(date_diary: HashMap<String, String>) {
-                        binding.diaryTextViewSimletime.text = date_diary["smile"]
-                        binding.diaryTextViewSadtime.text = date_diary["sad"]
-                        binding.diaryTextViewAngrytime.text = date_diary["angry"]
-                        binding.diaryTextViewHearttime.text = date_diary["heart"]
-                        binding.diaryTextViewContext.text = date_diary["content"]
-                        binding.jumpDiary.visibility = View.VISIBLE
-                        binding.deleteBtn.setOnClickListener {
-                            binding.jumpDiary.visibility = View.GONE
+                        val builder_key = AlertDialog.Builder(requireContext())
+                        builder_key.setTitle("請輸入日記鎖")
+
+                        // 创建一个 EditText 作为输入字段
+                        val input = EditText(requireContext())
+                        builder_key.setView(input)
+
+                        // 添加确定按钮
+                        builder_key.setPositiveButton("确定") { dialog, which ->
+                            val userInput = input.text.toString()
+                            if (userInput == user_key) {
+                                binding.diaryTextViewSimletime.text = date_diary["smile"]
+                                binding.diaryTextViewSadtime.text = date_diary["sad"]
+                                binding.diaryTextViewAngrytime.text = date_diary["angry"]
+                                binding.diaryTextViewHearttime.text = date_diary["heart"]
+                                binding.diaryTextViewContext.text = date_diary["content"]
+                                binding.jumpDiary.visibility = View.VISIBLE
+                                binding.deleteBtn.setOnClickListener {
+                                    binding.jumpDiary.visibility = View.GONE
+                                }
+                            } else {
+                                Toast.makeText(requireContext(), "日記鎖錯誤! 請重試一次", Toast.LENGTH_SHORT).show()
+                            }
                         }
+
+                        // 添加取消按钮
+                        builder_key.setNegativeButton(
+                            "取消"
+                        ) { dialog, which -> dialog.cancel() }
+
+                        // 创建并显示 AlertDialog
+                        val dialog = builder_key.create()
+                        dialog.show()
                     }
                 })
             } catch (e: Exception) {
@@ -111,13 +171,13 @@ class DiaryFragment : Fragment() {
         //獲取當前Activity的根視圖
         var rootView = binding.jumpDiary
         binding.shareBtn.setOnClickListener {
-            var bm: Bitmap =getScreenShot(rootView)//將當前畫面轉成bitmap型態
+            var bm: Bitmap = getScreenShot(rootView)//將當前畫面轉成bitmap型態
             do_share(bm)
         }
         return root
     }
 
-    fun getScreenShot( screenView: ScrollView): Bitmap {
+    fun getScreenShot(screenView: ScrollView): Bitmap {
         //val screenView = view.rootView
         var height = 0
         // 正确获取 ScrollView 的高度
@@ -130,6 +190,7 @@ class DiaryFragment : Fragment() {
         screenView.draw(canvas)
         return bitmap
     }
+
     fun do_share(bm: Bitmap) {
         try {
             // 儲存圖片到暫存檔案中
@@ -142,7 +203,11 @@ class DiaryFragment : Fragment() {
             // 取得暫存檔案的Uri
             val imagePath = File(requireContext().cacheDir, "images")
             val newFile = File(imagePath, "image.png")
-            val contentUri = FileProvider.getUriForFile(requireContext(), "com.example.kimochinikki.fileprovider", newFile)
+            val contentUri = FileProvider.getUriForFile(
+                requireContext(),
+                "com.example.kimochinikki.fileprovider",
+                newFile
+            )
             // 使用分享Intent分享圖片
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "image/png"

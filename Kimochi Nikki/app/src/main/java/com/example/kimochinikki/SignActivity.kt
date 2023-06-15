@@ -136,20 +136,20 @@ class SignActivity : AppCompatActivity() {
         Log.e("1111111 ",email)
         Log.e("32   ",password)
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            sign_userid.error="Invaild email format"
+            sign_userid.error=getString(R.string.login_err1)
         }else if(TextUtils.isEmpty(password)){
-            sign_password.error="Please enter password"
+            sign_password.error=getString(R.string.login_err2)
         }else if(password.length<6)
         {// too short
-            sign_password.error="Password must at least 6 chracters long"
+            sign_password.error=getString(R.string.login_err8)
         }
         else if(user_name.isEmpty())
         {
-            edittext_username.error="清輸入名稱"
+            edittext_username.error=getString(R.string.login_err9)
 
         }else if(user_key.isEmpty())
         {
-            edittext_userkey.error="清輸入日記鎖"
+            edittext_userkey.error=getString(R.string.login_err10)
 
         }else{
             firebaseSignUp()

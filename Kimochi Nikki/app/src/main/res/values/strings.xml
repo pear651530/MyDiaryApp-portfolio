@@ -11,6 +11,9 @@
     <string name="login_err5">請稍後</string>
     <string name="login_err6">創建用戶中...</string>
     <string name="login_err7">登入中...</string>
+    <string name="login_err8">請至少輸入6個字元</string>
+    <string name="login_err9">請輸入名稱</string>
+    <string name="login_err10">請輸入日記鎖</string>
     <string name="userid">信箱</string>
     <string name="userpassword">密碼</string>
     <string name="username">名稱</string>

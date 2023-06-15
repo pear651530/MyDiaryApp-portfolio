@@ -38,7 +38,8 @@
                 android:layout_marginRight="12px"
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
-                android:src="@drawable/delete_button" />
+                android:src="@drawable/delete_button"
+                android:clickable="true"/>
             <!--<a href="https://www.flaticon.com/free-icons/cancel" title="cancel icons">Cancel icons created by hqrloveq - Flaticon</a>-->
 
             <ImageButton
