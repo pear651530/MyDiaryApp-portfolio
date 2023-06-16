@@ -30,6 +30,7 @@ import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.IOException
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
@@ -220,7 +221,20 @@ class SettingFragment : Fragment() {
                 docRef
                     .update("password", userInput)
                     .addOnSuccessListener { Log.d("update password", "DocumentSnapshot successfully updated!") }
-                    .addOnFailureListener { e -> Log.w("update password", "Error updating document", e) } 
+                    .addOnFailureListener { e -> Log.w("update password", "Error updating document", e) }
+
+                val now_user = FirebaseAuth.getInstance().currentUser
+                now_user?.updatePassword(userInput)
+                    ?.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // 密码更新成功
+                            Log.d("PasswordUpdate", "Password updated successfully.")
+                        } else {
+                            // 密码更新失败
+                            Log.e("PasswordUpdate", "Error updating password.", task.exception)
+                        }
+                    }
+
      //////////////////////////
                 Toast.makeText(requireContext(), "修改成功!", Toast.LENGTH_SHORT).show()
             }else {

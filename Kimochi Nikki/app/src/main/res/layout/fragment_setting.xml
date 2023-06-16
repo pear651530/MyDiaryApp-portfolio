@@ -160,7 +160,7 @@
 
                 <TextView
                     android:id="@+id/now_username"
-                    android:layout_width="104dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="16dp"
@@ -168,7 +168,6 @@
                     android:shadowDx="2"
                     android:shadowDy="2"
                     android:shadowRadius="3"
-                    android:text="test"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />

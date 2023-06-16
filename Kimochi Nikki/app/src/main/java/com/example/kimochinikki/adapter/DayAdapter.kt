@@ -87,7 +87,7 @@ class DayAdapter(val list: List<DayBean>, val all_emo_array : ArrayList<HashMap<
 
         val imageView: ImageView = itemlayout?.findViewById(R.id.iconImageView)!!
         //Glide.with(context).load(R.drawable.ic_menu_home).into(imageView)
-
+        imageView.setImageResource(0)
         if (bean.currentMonth&&all_emo_array.isNotEmpty()) {
             Log.e("err??",all_emo_array.toString())
            var item=getItem_emo(bean.day-1)
