@@ -5,8 +5,6 @@
 
 ## 資料庫介紹
 使用Firebase做資料庫，儲存所有使用者資訊
-- 可以上傳頭像
-- 做到在不更換activity的情況下，依然可以更換左側使用者資訊
 
 ## APP技術
 - 自己繪製的icon
@@ -14,6 +12,8 @@
 - 多運用adapter的方式，靈活顯示資料
 - 將頭像裁切成圓形
 - 分享截圖是整個layout而非受限手機畫面
+- 利用LocalBroadcastManager＋BroadcastReceiver在不切換activity的情況下更換左側顯示之使用者資訊
+- 利用GlobalScope處理異步問題
 
 ## 其他
 Screenshot資料夾裡有作品部分截圖
